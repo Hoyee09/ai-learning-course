@@ -1,0 +1,4946 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="面向大一学生的 8 周 AI 入门交互课件：学习路线、每日任务、资源、项目验收与进度记录。">
+  <title>AI 起步实验室 · 8 周交互学习课件</title>
+  <style>
+    :root {
+      --ink: #17211d;
+      --ink-2: #25372f;
+      --muted: #66756e;
+      --paper: #f4f1e8;
+      --paper-2: #ebe6d9;
+      --card: #fffdf8;
+      --line: #dfe1d7;
+      --accent: #177a65;
+      --accent-soft: #dcefe8;
+      --orange: #e8783f;
+      --orange-soft: #fbe6d9;
+      --gold: #d4a83e;
+      --blue: #3f6f9e;
+      --sidebar: #163229;
+      --sidebar-2: #1d4337;
+      --lime: #b9e07b;
+      --danger: #b84a3a;
+      --shadow: 0 14px 40px rgba(23, 33, 29, 0.08);
+      --radius: 22px;
+      --radius-sm: 14px;
+      --max: 1180px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 88% 5%, rgba(232, 120, 63, 0.09), transparent 22rem),
+        radial-gradient(circle at 45% 0%, rgba(23, 122, 101, 0.08), transparent 28rem),
+        var(--paper);
+      font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", sans-serif;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.65;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    button,
+    a {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    p {
+      margin-top: 0;
+    }
+
+    h1,
+    h2,
+    h3 {
+      font-family: "Songti SC", "STSong", "Noto Serif CJK SC", Georgia, serif;
+      letter-spacing: -0.02em;
+      line-height: 1.18;
+    }
+
+    h1 {
+      font-size: clamp(2.35rem, 5vw, 4.35rem);
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      font-size: clamp(1.55rem, 3vw, 2.35rem);
+      margin-bottom: 14px;
+    }
+
+    h3 {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+
+    p {
+      color: var(--muted);
+    }
+
+    .skip-link {
+      position: fixed;
+      top: -60px;
+      left: 16px;
+      z-index: 999;
+      padding: 10px 16px;
+      border-radius: 10px;
+      color: #fff;
+      background: var(--ink);
+      transition: top 0.2s ease;
+    }
+
+    .skip-link:focus {
+      top: 12px;
+    }
+
+    .sidebar {
+      position: fixed;
+      inset: 0 auto 0 0;
+      z-index: 50;
+      width: 282px;
+      padding: 24px 18px 30px;
+      color: #eff7f2;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(185, 224, 123, 0.13), transparent 16rem),
+        linear-gradient(180deg, var(--sidebar), #10251e);
+      overflow-y: auto;
+      transition: transform 0.24s ease;
+    }
+
+    .brand {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      padding: 4px 8px 22px;
+    }
+
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 46px;
+      height: 46px;
+      border-radius: 15px;
+      color: #193329;
+      background: var(--lime);
+      font-weight: 900;
+      letter-spacing: -0.06em;
+      box-shadow: 0 8px 24px rgba(185, 224, 123, 0.2);
+    }
+
+    .brand strong {
+      display: block;
+      font-family: "Songti SC", "STSong", Georgia, serif;
+      font-size: 1.12rem;
+      letter-spacing: 0.02em;
+    }
+
+    .brand span {
+      display: block;
+      margin-top: 2px;
+      color: rgba(239, 247, 242, 0.6);
+      font-size: 0.76rem;
+      letter-spacing: 0.04em;
+    }
+
+    .overall {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin: 0 4px 22px;
+      padding: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.045);
+    }
+
+    .progress-ring {
+      --p: 0%;
+      position: relative;
+      display: grid;
+      flex: 0 0 auto;
+      place-items: center;
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      background: conic-gradient(var(--lime) var(--p), rgba(255, 255, 255, 0.12) 0);
+    }
+
+    .progress-ring::after {
+      position: absolute;
+      inset: 7px;
+      border-radius: 50%;
+      background: var(--sidebar);
+      content: "";
+    }
+
+    .progress-ring span {
+      position: relative;
+      z-index: 1;
+      font-size: 0.78rem;
+      font-weight: 800;
+    }
+
+    .overall small {
+      display: block;
+      color: rgba(239, 247, 242, 0.55);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .overall strong {
+      display: block;
+      margin-top: 2px;
+      font-size: 0.95rem;
+    }
+
+    .nav-list {
+      display: grid;
+      gap: 4px;
+      margin: 0 0 20px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 10px 12px;
+      border: 0;
+      border-radius: 12px;
+      color: rgba(239, 247, 242, 0.72);
+      background: transparent;
+      text-align: left;
+      transition: 0.18s ease;
+    }
+
+    .nav-item:hover,
+    .nav-item.active {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .nav-item.active {
+      box-shadow: inset 3px 0 0 var(--lime);
+    }
+
+    .nav-item span {
+      color: rgba(239, 247, 242, 0.3);
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+    }
+
+    .week-nav-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px 10px;
+      color: rgba(239, 247, 242, 0.42);
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .week-nav-label::after {
+      width: 36px;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.12);
+      content: "";
+    }
+
+    .week-nav {
+      display: grid;
+      gap: 3px;
+    }
+
+    .week-nav-item {
+      position: relative;
+      display: grid;
+      grid-template-columns: 30px 1fr;
+      gap: 9px;
+      align-items: center;
+      width: 100%;
+      padding: 9px 10px;
+      border: 0;
+      border-radius: 12px;
+      color: rgba(239, 247, 242, 0.66);
+      background: transparent;
+      text-align: left;
+      transition: 0.18s ease;
+    }
+
+    .week-nav-item:hover,
+    .week-nav-item.active {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .week-nav-item.active {
+      box-shadow: inset 3px 0 0 var(--orange);
+    }
+
+    .week-dot {
+      display: grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 9px;
+      font-size: 0.7rem;
+      font-weight: 800;
+    }
+
+    .week-nav-text {
+      min-width: 0;
+    }
+
+    .week-nav-text strong {
+      display: block;
+      overflow: hidden;
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .week-nav-text small {
+      display: block;
+      color: rgba(239, 247, 242, 0.4);
+      font-size: 0.68rem;
+    }
+
+    .week-nav-bar {
+      position: absolute;
+      right: 10px;
+      bottom: 5px;
+      left: 49px;
+      height: 2px;
+      overflow: hidden;
+      border-radius: 2px;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .week-nav-bar i {
+      display: block;
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      background: var(--lime);
+      transition: width 0.25s ease;
+    }
+
+    .sidebar-foot {
+      margin: 24px 8px 0;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      color: rgba(239, 247, 242, 0.38);
+      font-size: 0.7rem;
+      line-height: 1.55;
+    }
+
+    .main {
+      min-height: 100vh;
+      margin-left: 282px;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      height: 68px;
+      padding: 0 30px;
+      border-bottom: 1px solid rgba(23, 33, 29, 0.08);
+      background: rgba(244, 241, 232, 0.86);
+      backdrop-filter: blur(16px);
+    }
+
+    .menu-btn {
+      display: none;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: var(--card);
+      font-size: 1.1rem;
+    }
+
+    .breadcrumb {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      color: var(--muted);
+      font-size: 0.82rem;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .breadcrumb strong {
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .save-state {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--muted);
+      font-size: 0.74rem;
+    }
+
+    .save-state::before {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      content: "";
+    }
+
+    .ghost-btn,
+    .primary-btn,
+    .secondary-btn,
+    .mini-btn,
+    .danger-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 40px;
+      padding: 9px 15px;
+      border-radius: 12px;
+      border: 1px solid transparent;
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform 0.16s ease, background 0.16s ease, border-color 0.16s ease;
+    }
+
+    .primary-btn {
+      color: #fff;
+      background: var(--accent);
+      box-shadow: 0 8px 22px rgba(23, 122, 101, 0.18);
+    }
+
+    .primary-btn:hover,
+    .secondary-btn:hover,
+    .ghost-btn:hover,
+    .mini-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .secondary-btn {
+      color: var(--ink);
+      border-color: var(--line);
+      background: var(--card);
+    }
+
+    .ghost-btn {
+      color: var(--ink);
+      border-color: var(--line);
+      background: transparent;
+    }
+
+    .mini-btn {
+      min-height: 30px;
+      padding: 4px 10px;
+      border-color: var(--line);
+      color: var(--muted);
+      background: transparent;
+      font-size: 0.72rem;
+    }
+
+    .danger-btn {
+      color: var(--danger);
+      border-color: rgba(184, 74, 58, 0.25);
+      background: rgba(184, 74, 58, 0.05);
+    }
+
+    .view-root {
+      width: 100%;
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 30px 32px 76px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(310px, 0.75fr);
+      gap: 22px;
+      margin-bottom: 22px;
+    }
+
+    .hero-copy {
+      position: relative;
+      overflow: hidden;
+      padding: clamp(28px, 4.5vw, 50px);
+      border-radius: 30px;
+      color: #f8f4e8;
+      background:
+        radial-gradient(circle at 86% 18%, rgba(185, 224, 123, 0.22), transparent 30%),
+        radial-gradient(circle at 8% 100%, rgba(232, 120, 63, 0.2), transparent 38%),
+        linear-gradient(135deg, #1c3d32, #12241e);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-copy::after {
+      position: absolute;
+      right: -70px;
+      bottom: -90px;
+      width: 260px;
+      height: 260px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      box-shadow:
+        0 0 0 34px rgba(255, 255, 255, 0.035),
+        0 0 0 68px rgba(255, 255, 255, 0.022);
+      content: "";
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 15px;
+      color: var(--accent);
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .hero-copy .eyebrow {
+      color: var(--lime);
+    }
+
+    .eyebrow::before {
+      width: 20px;
+      height: 1px;
+      background: currentColor;
+      content: "";
+    }
+
+    .hero-copy h1 em {
+      color: var(--lime);
+      font-style: normal;
+    }
+
+    .hero-copy p {
+      max-width: 580px;
+      margin-bottom: 24px;
+      color: rgba(248, 244, 232, 0.68);
+      font-size: 0.98rem;
+    }
+
+    .hero-actions {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .hero-copy .secondary-btn {
+      color: #f8f4e8;
+      border-color: rgba(255, 255, 255, 0.18);
+      background: rgba(255, 255, 255, 0.07);
+    }
+
+    .hero-copy .primary-btn {
+      color: #173127;
+      background: var(--lime);
+      box-shadow: none;
+    }
+
+    .hero-panel {
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      background:
+        radial-gradient(circle at 100% 0%, rgba(232, 120, 63, 0.12), transparent 14rem),
+        var(--card);
+      box-shadow: var(--shadow);
+    }
+
+    .mini-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 16px;
+      color: var(--muted);
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .mini-label span:last-child {
+      color: var(--orange);
+      letter-spacing: 0;
+      text-transform: none;
+    }
+
+    .next-card {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+    }
+
+    #nextActionBody {
+      display: flex;
+      flex: 1;
+    }
+
+    .next-card .next-kicker {
+      color: var(--accent);
+      font-size: 0.75rem;
+      font-weight: 800;
+    }
+
+    .next-card h2 {
+      margin: 8px 0 10px;
+      font-size: 1.6rem;
+    }
+
+    .next-card .next-task {
+      margin-bottom: 14px;
+      color: var(--ink-2);
+      font-size: 0.88rem;
+      line-height: 1.7;
+    }
+
+    .next-output {
+      margin: 0 0 18px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      color: var(--ink-2);
+      background: var(--paper);
+      font-size: 0.78rem;
+    }
+
+    .next-output strong {
+      color: var(--accent);
+    }
+
+    .next-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: auto;
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .stat-card {
+      padding: 18px 20px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255, 253, 248, 0.78);
+    }
+
+    .stat-card small {
+      display: block;
+      color: var(--muted);
+      font-size: 0.7rem;
+      letter-spacing: 0.04em;
+    }
+
+    .stat-card strong {
+      display: block;
+      margin-top: 2px;
+      font-family: "Songti SC", "STSong", Georgia, serif;
+      font-size: 1.7rem;
+      line-height: 1.2;
+    }
+
+    .stat-card span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 0.72rem;
+    }
+
+    .section-block {
+      margin-top: 30px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 15px;
+    }
+
+    .section-head h2 {
+      margin-bottom: 0;
+      font-size: clamp(1.45rem, 2.5vw, 2rem);
+    }
+
+    .section-head p {
+      max-width: 640px;
+      margin-bottom: 0;
+      font-size: 0.85rem;
+    }
+
+    .panel {
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--card);
+      box-shadow: 0 1px 0 rgba(23, 33, 29, 0.02);
+    }
+
+    .panel.soft {
+      background: rgba(255, 253, 248, 0.62);
+      box-shadow: none;
+    }
+
+    .prep-card {
+      display: grid;
+      grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .prep-copy h3 {
+      font-size: 1.45rem;
+    }
+
+    .prep-copy p {
+      font-size: 0.84rem;
+    }
+
+    .prep-progress {
+      margin-top: 18px;
+    }
+
+    .progress-track {
+      height: 7px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: var(--paper-2);
+    }
+
+    .progress-track i {
+      display: block;
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--accent), #49a88f);
+      transition: width 0.3s ease;
+    }
+
+    .prep-progress small {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 0.72rem;
+    }
+
+    .check-list {
+      display: grid;
+      gap: 7px;
+    }
+
+    .check-row {
+      display: grid;
+      grid-template-columns: 20px 1fr auto;
+      gap: 10px;
+      align-items: start;
+      padding: 10px 11px;
+      border-radius: 11px;
+      color: var(--ink-2);
+      font-size: 0.8rem;
+      transition: background 0.16s ease;
+    }
+
+    .check-row:hover {
+      background: var(--paper);
+    }
+
+    .check-row input {
+      margin-top: 3px;
+    }
+
+    .check-row small {
+      color: var(--muted);
+      font-size: 0.7rem;
+      white-space: nowrap;
+    }
+
+    .check-row.done span {
+      color: var(--muted);
+      text-decoration: line-through;
+      text-decoration-thickness: 1px;
+    }
+
+    input[type="checkbox"] {
+      width: 17px;
+      height: 17px;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    .week-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .week-card {
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 205px;
+      padding: 21px;
+      border: 1px solid var(--line);
+      border-radius: 19px;
+      background: var(--card);
+      text-align: left;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    }
+
+    .week-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(23, 122, 101, 0.28);
+      box-shadow: var(--shadow);
+    }
+
+    .week-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .week-index {
+      font-family: "Songti SC", "STSong", Georgia, serif;
+      color: var(--paper-2);
+      font-size: 2.6rem;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -0.08em;
+    }
+
+    .week-card h3 {
+      margin-bottom: 6px;
+      font-size: 1.2rem;
+    }
+
+    .week-card p {
+      flex: 1;
+      margin-bottom: 16px;
+      font-size: 0.78rem;
+    }
+
+    .week-card-foot {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 0.7rem;
+    }
+
+    .week-card-foot .progress-track {
+      flex: 1;
+      height: 4px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      color: var(--accent);
+      background: var(--accent-soft);
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+    }
+
+    .badge.orange {
+      color: #a54f27;
+      background: var(--orange-soft);
+    }
+
+    .badge.gold {
+      color: #7c5b0f;
+      background: #f7edcf;
+    }
+
+    .badge.gray {
+      color: var(--muted);
+      background: var(--paper-2);
+    }
+
+    .project-preview {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      gap: 26px;
+      align-items: center;
+    }
+
+    .project-preview h3 {
+      font-size: 1.6rem;
+    }
+
+    .pipeline {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 7px;
+      margin-top: 16px;
+    }
+
+    .pipeline span {
+      padding: 7px 10px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      color: var(--ink-2);
+      background: var(--paper);
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
+    .pipeline i {
+      color: var(--orange);
+      font-style: normal;
+      font-weight: 800;
+    }
+
+    .project-diagram {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 9px;
+      padding: 16px;
+      border-radius: 20px;
+      background:
+        linear-gradient(135deg, rgba(23, 122, 101, 0.08), rgba(232, 120, 63, 0.06)),
+        var(--paper);
+    }
+
+    .diagram-node {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-height: 58px;
+      padding: 10px;
+      border: 1px solid rgba(23, 33, 29, 0.08);
+      border-radius: 13px;
+      background: rgba(255, 253, 248, 0.82);
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .diagram-node b {
+      display: grid;
+      flex: 0 0 auto;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 9px;
+      color: #fff;
+      background: var(--accent);
+      font-size: 0.68rem;
+    }
+
+    .diagram-node:nth-child(2) b {
+      background: var(--orange);
+    }
+
+    .diagram-node:nth-child(3) b {
+      background: var(--blue);
+    }
+
+    .diagram-node:nth-child(4) b {
+      background: var(--gold);
+    }
+
+    .page-head {
+      margin-bottom: 24px;
+    }
+
+    .page-head h1 {
+      margin-bottom: 10px;
+      font-size: clamp(2rem, 4vw, 3.35rem);
+    }
+
+    .page-head p {
+      max-width: 760px;
+      margin-bottom: 0;
+    }
+
+    .phase-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+
+    .phase-card {
+      position: relative;
+      overflow: hidden;
+      padding: 21px;
+      border-radius: 19px;
+      border: 1px solid var(--line);
+      background: var(--card);
+    }
+
+    .phase-card::after {
+      position: absolute;
+      right: -18px;
+      bottom: -26px;
+      color: rgba(23, 33, 29, 0.04);
+      font-family: "Songti SC", Georgia, serif;
+      font-size: 6rem;
+      font-weight: 800;
+      line-height: 1;
+      content: attr(data-n);
+    }
+
+    .phase-card h3 {
+      margin: 6px 0 8px;
+      font-size: 1.2rem;
+    }
+
+    .phase-card p {
+      margin-bottom: 0;
+      font-size: 0.78rem;
+    }
+
+    .roadmap-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .roadmap-row {
+      display: grid;
+      grid-template-columns: 72px minmax(0, 1fr) 160px;
+      gap: 20px;
+      align-items: center;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--card);
+      text-align: left;
+      transition: 0.18s ease;
+    }
+
+    .roadmap-row:hover {
+      border-color: rgba(23, 122, 101, 0.3);
+      transform: translateX(3px);
+    }
+
+    .roadmap-num {
+      display: grid;
+      place-items: center;
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "Songti SC", Georgia, serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+    }
+
+    .roadmap-copy h3 {
+      margin-bottom: 4px;
+      font-size: 1.1rem;
+    }
+
+    .roadmap-copy p {
+      margin-bottom: 5px;
+      font-size: 0.78rem;
+    }
+
+    .roadmap-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 7px;
+      color: var(--muted);
+      background: var(--paper);
+      font-size: 0.66rem;
+    }
+
+    .roadmap-progress {
+      text-align: right;
+    }
+
+    .roadmap-progress strong {
+      display: block;
+      font-size: 0.76rem;
+    }
+
+    .roadmap-progress small {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--muted);
+      font-size: 0.68rem;
+    }
+
+    .direction-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .direction-card {
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--card);
+    }
+
+    .direction-card h3 {
+      font-size: 1.1rem;
+    }
+
+    .direction-card p {
+      font-size: 0.78rem;
+    }
+
+    .week-hero {
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 22px;
+      padding: clamp(26px, 4vw, 42px);
+      border-radius: 28px;
+      color: #f8f4e8;
+      background:
+        radial-gradient(circle at 90% 10%, rgba(185, 224, 123, 0.18), transparent 26%),
+        linear-gradient(135deg, #1b3b31, #14271f);
+    }
+
+    .week-hero::after {
+      position: absolute;
+      right: -60px;
+      bottom: -110px;
+      width: 260px;
+      height: 260px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      box-shadow: 0 0 0 34px rgba(255, 255, 255, 0.03);
+      content: "";
+    }
+
+    .week-hero-top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .week-hero .badge {
+      color: var(--lime);
+      background: rgba(185, 224, 123, 0.12);
+    }
+
+    .week-hero h1 {
+      position: relative;
+      z-index: 1;
+      margin-bottom: 12px;
+      font-size: clamp(2rem, 4.2vw, 3.4rem);
+    }
+
+    .week-hero p {
+      position: relative;
+      z-index: 1;
+      max-width: 760px;
+      margin-bottom: 18px;
+      color: rgba(248, 244, 232, 0.7);
+    }
+
+    .week-meta {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .week-meta span {
+      padding: 6px 10px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 9px;
+      color: rgba(248, 244, 232, 0.78);
+      background: rgba(255, 255, 255, 0.05);
+      font-size: 0.72rem;
+    }
+
+    .week-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 310px;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .week-main {
+      display: grid;
+      gap: 18px;
+    }
+
+    .week-side {
+      position: sticky;
+      top: 88px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .week-section {
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--card);
+    }
+
+    .week-section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .week-section-head h2 {
+      margin-bottom: 0;
+      font-size: 1.35rem;
+    }
+
+    .objective-list {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      counter-reset: objective;
+    }
+
+    .objective-list li {
+      display: grid;
+      grid-template-columns: 25px 1fr;
+      gap: 10px;
+      align-items: start;
+      padding: 9px 0;
+      border-bottom: 1px dashed var(--line);
+      color: var(--ink-2);
+      font-size: 0.84rem;
+      counter-increment: objective;
+    }
+
+    .objective-list li:last-child {
+      border-bottom: 0;
+    }
+
+    .objective-list li::before {
+      display: grid;
+      place-items: center;
+      width: 23px;
+      height: 23px;
+      margin-top: 1px;
+      border-radius: 8px;
+      color: var(--accent);
+      background: var(--accent-soft);
+      font-size: 0.7rem;
+      font-weight: 800;
+      content: counter(objective, decimal-leading-zero);
+    }
+
+    .resource-list {
+      display: grid;
+      gap: 9px;
+    }
+
+    .resource-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      padding: 13px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: var(--paper);
+    }
+
+    .resource-row h4 {
+      margin: 0 0 2px;
+      font-size: 0.86rem;
+    }
+
+    .resource-row p {
+      margin: 0;
+      font-size: 0.72rem;
+    }
+
+    .resource-row .resource-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 0.66rem;
+    }
+
+    .resource-row .mini-btn {
+      white-space: nowrap;
+    }
+
+    .task-list {
+      display: grid;
+      gap: 9px;
+    }
+
+    .task-row {
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr) auto;
+      gap: 11px;
+      align-items: start;
+      padding: 15px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--paper);
+      transition: border-color 0.16s ease, background 0.16s ease;
+    }
+
+    .task-row:hover {
+      border-color: rgba(23, 122, 101, 0.28);
+    }
+
+    .task-row.done {
+      background: rgba(220, 239, 232, 0.35);
+      border-color: rgba(23, 122, 101, 0.18);
+    }
+
+    .task-row > input {
+      margin-top: 4px;
+    }
+
+    .task-body {
+      cursor: pointer;
+    }
+
+    .task-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 4px;
+      color: var(--muted);
+      font-size: 0.68rem;
+    }
+
+    .task-meta span:first-child {
+      color: var(--accent);
+      font-weight: 800;
+    }
+
+    .task-body h4 {
+      margin: 0 0 4px;
+      color: var(--ink);
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+
+    .task-body p {
+      margin: 0 0 6px;
+      color: var(--ink-2);
+      font-size: 0.8rem;
+      line-height: 1.65;
+    }
+
+    .task-output {
+      color: var(--muted);
+      font-size: 0.7rem;
+    }
+
+    .task-output strong {
+      color: var(--orange);
+    }
+
+    .task-row.done .task-body h4 {
+      color: var(--muted);
+      text-decoration: line-through;
+    }
+
+    .deliverable-box {
+      padding: 18px;
+      border-radius: 16px;
+      background:
+        linear-gradient(135deg, rgba(23, 122, 101, 0.08), rgba(232, 120, 63, 0.04)),
+        var(--paper);
+    }
+
+    .deliverable-box h3 {
+      margin-bottom: 7px;
+    }
+
+    .deliverable-box > p {
+      margin-bottom: 13px;
+      font-size: 0.82rem;
+    }
+
+    .steps {
+      display: grid;
+      gap: 7px;
+      margin: 0 0 16px;
+      padding-left: 20px;
+      color: var(--ink-2);
+      font-size: 0.8rem;
+    }
+
+    .acceptance-list {
+      display: grid;
+      gap: 5px;
+      padding-top: 12px;
+      border-top: 1px dashed rgba(23, 33, 29, 0.12);
+    }
+
+    .side-card {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 17px;
+      background: var(--card);
+    }
+
+    .side-card h3 {
+      margin-bottom: 12px;
+      font-size: 1rem;
+    }
+
+    .week-side .progress-ring {
+      width: 68px;
+      height: 68px;
+      background: conic-gradient(var(--accent) var(--p), var(--paper-2) 0);
+    }
+
+    .week-side .progress-ring::after {
+      background: var(--card);
+    }
+
+    .week-side .progress-ring span {
+      color: var(--ink);
+    }
+
+    .side-progress {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .side-progress strong {
+      display: block;
+      font-size: 0.9rem;
+    }
+
+    .side-progress small {
+      display: block;
+      color: var(--muted);
+      font-size: 0.7rem;
+    }
+
+    .rhythm-list {
+      display: grid;
+      gap: 7px;
+    }
+
+    .rhythm-item {
+      display: grid;
+      grid-template-columns: 20px 1fr auto;
+      gap: 8px;
+      align-items: center;
+      color: var(--muted);
+      font-size: 0.72rem;
+    }
+
+    .rhythm-dot {
+      display: block;
+      width: 8px;
+      height: 8px;
+      margin-left: 5px;
+      border-radius: 50%;
+      background: var(--paper-2);
+    }
+
+    .rhythm-item.done .rhythm-dot {
+      background: var(--accent);
+      box-shadow: 0 0 0 3px rgba(23, 122, 101, 0.1);
+    }
+
+    .rhythm-item.done span:nth-child(2) {
+      color: var(--ink-2);
+    }
+
+    .note-field {
+      display: grid;
+      gap: 5px;
+      margin-bottom: 12px;
+    }
+
+    .note-field label {
+      color: var(--ink-2);
+      font-size: 0.74rem;
+      font-weight: 700;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 78px;
+      padding: 10px 12px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      color: var(--ink);
+      background: var(--paper);
+      font-size: 0.78rem;
+      line-height: 1.6;
+    }
+
+    textarea:focus,
+    input:focus,
+    button:focus-visible,
+    a:focus-visible {
+      outline: 2px solid rgba(23, 122, 101, 0.45);
+      outline-offset: 2px;
+    }
+
+    .mini-quiz {
+      display: grid;
+      gap: 8px;
+    }
+
+    details.mini-quiz-item {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--paper);
+    }
+
+    details.mini-quiz-item summary {
+      cursor: pointer;
+      color: var(--ink-2);
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .mini-quiz-answer {
+      margin-top: 10px;
+      padding-top: 9px;
+      border-top: 1px dashed var(--line);
+      color: var(--ink-2);
+      font-size: 0.75rem;
+    }
+
+    .mini-quiz-answer strong {
+      color: var(--accent);
+    }
+
+    .callout {
+      display: flex;
+      gap: 12px;
+      padding: 14px 16px;
+      border: 1px solid rgba(232, 120, 63, 0.18);
+      border-radius: 14px;
+      color: var(--ink-2);
+      background: rgba(251, 230, 217, 0.45);
+      font-size: 0.78rem;
+    }
+
+    .callout b {
+      flex: 0 0 auto;
+      color: var(--orange);
+    }
+
+    .resource-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .search-input {
+      flex: 1;
+      min-width: 220px;
+      height: 42px;
+      padding: 0 13px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      color: var(--ink);
+      background: var(--card);
+    }
+
+    .filter-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .chip {
+      padding: 6px 11px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      background: transparent;
+      font-size: 0.72rem;
+      transition: 0.16s ease;
+    }
+
+    .chip:hover,
+    .chip.active {
+      color: #fff;
+      border-color: var(--accent);
+      background: var(--accent);
+    }
+
+    .resource-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 13px;
+    }
+
+    .resource-card {
+      display: flex;
+      flex-direction: column;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 17px;
+      background: var(--card);
+    }
+
+    .resource-card .badge {
+      align-self: flex-start;
+      margin-bottom: 10px;
+    }
+
+    .resource-card h3 {
+      margin-bottom: 5px;
+      font-size: 1.02rem;
+    }
+
+    .resource-card p {
+      flex: 1;
+      margin-bottom: 12px;
+      font-size: 0.78rem;
+    }
+
+    .resource-card-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding-top: 12px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.68rem;
+    }
+
+    .empty-state {
+      grid-column: 1 / -1;
+      padding: 36px;
+      border: 1px dashed var(--line);
+      border-radius: 16px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 0.82rem;
+    }
+
+    .quiz-shell {
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    .quiz-topline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 0.76rem;
+    }
+
+    .quiz-progress {
+      height: 7px;
+      margin-bottom: 18px;
+      overflow: hidden;
+      border-radius: 99px;
+      background: var(--paper-2);
+    }
+
+    .quiz-progress i {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--accent), #52ad94);
+      transition: width 0.25s ease;
+    }
+
+    .quiz-card {
+      padding: clamp(22px, 4vw, 34px);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: var(--card);
+      box-shadow: var(--shadow);
+    }
+
+    .quiz-card h2 {
+      margin: 8px 0 20px;
+      font-size: clamp(1.35rem, 2.8vw, 1.9rem);
+    }
+
+    .quiz-options {
+      display: grid;
+      gap: 9px;
+    }
+
+    .quiz-option {
+      width: 100%;
+      padding: 13px 15px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      color: var(--ink-2);
+      background: var(--paper);
+      text-align: left;
+      font-size: 0.83rem;
+      transition: 0.16s ease;
+    }
+
+    .quiz-option:hover:not(:disabled) {
+      border-color: rgba(23, 122, 101, 0.4);
+      background: var(--accent-soft);
+    }
+
+    .quiz-option:disabled {
+      cursor: default;
+      opacity: 1;
+    }
+
+    .quiz-option.correct {
+      border-color: rgba(23, 122, 101, 0.4);
+      background: var(--accent-soft);
+      color: #0f5f4e;
+      font-weight: 700;
+    }
+
+    .quiz-option.wrong {
+      border-color: rgba(184, 74, 58, 0.32);
+      background: rgba(184, 74, 58, 0.06);
+      color: #8e392d;
+    }
+
+    .quiz-feedback {
+      margin-top: 15px;
+      padding: 13px 15px;
+      border-radius: 12px;
+      background: var(--paper);
+      font-size: 0.8rem;
+    }
+
+    .quiz-feedback strong {
+      display: block;
+      margin-bottom: 3px;
+      color: var(--accent);
+    }
+
+    .quiz-feedback.bad strong {
+      color: var(--danger);
+    }
+
+    .quiz-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: 15px;
+    }
+
+    .score-panel {
+      padding: 32px;
+      border-radius: 24px;
+      color: #f8f4e8;
+      background:
+        radial-gradient(circle at 90% 10%, rgba(185, 224, 123, 0.2), transparent 30%),
+        linear-gradient(135deg, #1b3b31, #12241e);
+      text-align: center;
+    }
+
+    .score-panel .score-number {
+      margin: 10px 0 4px;
+      color: var(--lime);
+      font-family: "Songti SC", Georgia, serif;
+      font-size: 4rem;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .score-panel p {
+      color: rgba(248, 244, 232, 0.68);
+    }
+
+    .quiz-review {
+      display: grid;
+      gap: 8px;
+      margin-top: 18px;
+      text-align: left;
+    }
+
+    .review-row {
+      padding: 12px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.04);
+      font-size: 0.76rem;
+    }
+
+    .review-row strong {
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .review-row.bad strong {
+      color: #ffb39f;
+    }
+
+    .review-row.good strong {
+      color: var(--lime);
+    }
+
+    .notes-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(320px, 0.8fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .notes-panel {
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--card);
+    }
+
+    .notes-panel textarea {
+      min-height: 105px;
+    }
+
+    .notes-panel textarea.large {
+      min-height: 250px;
+    }
+
+    .week-picker {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 18px;
+    }
+
+    .week-picker .chip {
+      min-width: 40px;
+      text-align: center;
+    }
+
+    .data-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .danger-zone {
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px dashed var(--line);
+    }
+
+    .danger-zone p {
+      margin-bottom: 9px;
+      font-size: 0.73rem;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      z-index: 120;
+      max-width: calc(100vw - 32px);
+      padding: 11px 16px;
+      border-radius: 12px;
+      color: #f8f4e8;
+      background: var(--ink);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.2);
+      font-size: 0.78rem;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, 10px);
+      transition: opacity 0.18s ease, transform 0.18s ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    .focus-modal[hidden] {
+      display: none;
+    }
+
+    .focus-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 150;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      background: rgba(10, 20, 16, 0.72);
+      backdrop-filter: blur(8px);
+    }
+
+    .focus-card {
+      position: relative;
+      width: min(480px, 100%);
+      max-height: calc(100vh - 40px);
+      overflow-y: auto;
+      padding: clamp(24px, 5vw, 38px);
+      border-radius: 28px;
+      color: #f8f4e8;
+      background:
+        radial-gradient(circle at 100% 0%, rgba(185, 224, 123, 0.18), transparent 40%),
+        linear-gradient(145deg, #1c3d32, #11221c);
+      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.35);
+      text-align: center;
+    }
+
+    .focus-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 34px;
+      height: 34px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 50%;
+      color: rgba(248, 244, 232, 0.7);
+      background: transparent;
+      font-size: 1.1rem;
+    }
+
+    .focus-card .eyebrow {
+      color: var(--lime);
+    }
+
+    .focus-card h2 {
+      margin-bottom: 8px;
+      font-size: 1.6rem;
+    }
+
+    .focus-card .focus-meta {
+      color: rgba(248, 244, 232, 0.62);
+      font-size: 0.78rem;
+    }
+
+    .focus-clock {
+      margin: 22px 0;
+      color: var(--lime);
+      font-family: "Songti SC", Georgia, serif;
+      font-size: clamp(4rem, 14vw, 6rem);
+      font-variant-numeric: tabular-nums;
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.06em;
+    }
+
+    .focus-actions {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .focus-card .primary-btn {
+      color: #173127;
+      background: var(--lime);
+    }
+
+    .focus-card .secondary-btn {
+      color: #f8f4e8;
+      border-color: rgba(255, 255, 255, 0.16);
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .focus-complete {
+      margin-top: 14px;
+    }
+
+    .focus-card .ghost-btn {
+      color: rgba(248, 244, 232, 0.72);
+      border-color: rgba(255, 255, 255, 0.14);
+    }
+
+    .mobile-backdrop {
+      display: none;
+    }
+
+    @media (max-width: 1040px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+
+      body.nav-open .sidebar {
+        transform: translateX(0);
+      }
+
+      body.nav-open {
+        overflow: hidden;
+      }
+
+      .main {
+        margin-left: 0;
+      }
+
+      .menu-btn {
+        display: grid;
+      }
+
+      .mobile-backdrop {
+        position: fixed;
+        inset: 0;
+        z-index: 40;
+        display: block;
+        background: rgba(10, 20, 16, 0.45);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease;
+      }
+
+      body.nav-open .mobile-backdrop {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .week-layout {
+        grid-template-columns: minmax(0, 1fr) 280px;
+      }
+    }
+
+    @media (max-width: 860px) {
+      .hero,
+      .prep-card,
+      .project-preview,
+      .notes-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .stat-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .week-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .week-side {
+        position: static;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .week-side .side-card:last-child {
+        grid-column: 1 / -1;
+      }
+
+      .phase-grid,
+      .direction-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .roadmap-row {
+        grid-template-columns: 56px minmax(0, 1fr);
+      }
+
+      .roadmap-progress {
+        grid-column: 2;
+        text-align: left;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .topbar {
+        height: 60px;
+        padding: 0 16px;
+      }
+
+      .save-state {
+        display: none;
+      }
+
+      .view-root {
+        padding: 20px 16px 56px;
+      }
+
+      .hero-copy {
+        border-radius: 22px;
+      }
+
+      .hero-panel {
+        border-radius: 22px;
+      }
+
+      .stat-card strong {
+        font-size: 1.4rem;
+      }
+
+      .week-grid,
+      .resource-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .week-side {
+        grid-template-columns: 1fr;
+      }
+
+      .week-side .side-card:last-child {
+        grid-column: auto;
+      }
+
+      .task-row {
+        grid-template-columns: 20px minmax(0, 1fr);
+      }
+
+      .task-row .focus-btn {
+        grid-column: 2;
+        justify-self: start;
+      }
+
+      .section-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .resource-row {
+        grid-template-columns: 1fr;
+      }
+
+      .resource-row .mini-btn {
+        justify-self: start;
+      }
+
+      .roadmap-row {
+        gap: 12px;
+        padding: 16px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+      }
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+
+      .sidebar,
+      .topbar,
+      .week-side,
+      .no-print,
+      .toast,
+      .focus-modal,
+      .mobile-backdrop {
+        display: none !important;
+      }
+
+      .main {
+        margin-left: 0;
+      }
+
+      .view-root {
+        max-width: none;
+        padding: 0;
+      }
+
+      .week-hero {
+        color: #111;
+        border: 1px solid #bbb;
+        background: #fff;
+      }
+
+      .week-hero p,
+      .week-hero .badge,
+      .week-meta span {
+        color: #333;
+      }
+
+      .week-layout {
+        display: block;
+      }
+
+      .week-main {
+        display: block;
+      }
+
+      .week-section,
+      .panel {
+        margin-bottom: 14px;
+        break-inside: avoid;
+        box-shadow: none;
+      }
+
+      .task-row {
+        break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#mainContent">跳到主要内容</a>
+
+  <div class="app">
+    <aside class="sidebar" id="sidebar" aria-label="课件导航">
+      <div class="brand">
+        <div class="brand-mark">AI</div>
+        <div>
+          <strong>AI 起步实验室</strong>
+          <span>8 周 · 交互学习课件</span>
+        </div>
+      </div>
+
+      <div class="overall">
+        <div class="progress-ring" id="sideRing" aria-hidden="true"><span id="sidePercent">0%</span></div>
+        <div>
+          <small>总进度</small>
+          <strong id="sideCount">0 / 0 个行动项</strong>
+        </div>
+      </div>
+
+      <nav class="nav-list" aria-label="主要页面">
+        <button class="nav-item active" type="button" data-view="dashboard">学习总览 <span>01</span></button>
+        <button class="nav-item" type="button" data-view="roadmap">8 周路线 <span>02</span></button>
+        <button class="nav-item" type="button" data-view="resources">学习资源 <span>03</span></button>
+        <button class="nav-item" type="button" data-view="quiz">自测题库 <span>04</span></button>
+        <button class="nav-item" type="button" data-view="notes">学习复盘 <span>05</span></button>
+      </nav>
+
+      <div class="week-nav-label">每周任务</div>
+      <div class="week-nav" id="weekNav"></div>
+
+      <div class="sidebar-foot">
+        进度、笔记与自测成绩保存在当前浏览器。<br>
+        建议每周固定 6 小时，先完成，再优化。
+      </div>
+    </aside>
+
+    <div class="mobile-backdrop" id="mobileBackdrop" aria-hidden="true"></div>
+
+    <main class="main" id="mainContent">
+      <header class="topbar">
+        <button class="menu-btn" id="menuBtn" type="button" aria-label="打开导航" aria-expanded="false">☰</button>
+        <div class="breadcrumb" id="breadcrumb"><strong>学习总览</strong></div>
+        <div class="topbar-actions">
+          <span class="save-state" id="saveState">进度自动保存</span>
+          <button class="ghost-btn" type="button" data-action="export">导出记录</button>
+        </div>
+      </header>
+
+      <div class="view-root" id="viewRoot" aria-live="polite"></div>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <div class="focus-modal" id="focusModal" hidden role="dialog" aria-modal="true" aria-labelledby="focusTitle">
+    <div class="focus-card">
+      <button class="focus-close" id="focusClose" type="button" aria-label="关闭专注计时">×</button>
+      <div class="eyebrow">25 分钟专注</div>
+      <h2 id="focusTitle">准备开始</h2>
+      <p class="focus-meta" id="focusMeta"></p>
+      <div class="focus-clock" id="focusClock">25:00</div>
+      <div class="focus-actions">
+        <button class="primary-btn" id="focusStart" type="button">开始计时</button>
+        <button class="secondary-btn" id="focusReset" type="button">重置</button>
+      </div>
+      <div class="focus-complete">
+        <button class="ghost-btn" id="focusComplete" type="button">完成并打卡</button>
+      </div>
+    </div>
+  </div>
+
+  <noscript>
+    <div style="padding:24px;font-family:sans-serif;">这个交互课件需要启用 JavaScript 才能记录进度和显示内容。</div>
+  </noscript>
+
+  <script>
+    const RESOURCES = {
+      "cs50p": {
+        title: "CS50P：Python 编程入门",
+        category: "Python",
+        source: "Harvard CS50",
+        time: "选看 90 分钟",
+        why: "用短小示例建立编程直觉。只看函数、条件、循环，不要一次刷完整门课。",
+        url: "https://cs50.harvard.edu/python/"
+      },
+      "py-docs": {
+        title: "Python 官方教程：基础语法",
+        category: "Python",
+        source: "Python Docs",
+        time: "按需查阅",
+        why: "遇到不确定的语法时查对应章节。目标是把官方文档当成工具书。",
+        url: "https://docs.python.org/3/tutorial/"
+      },
+      "vscode-python": {
+        title: "VS Code 的 Python 入门",
+        category: "工具",
+        source: "VS Code Docs",
+        time: "20 分钟",
+        why: "配置解释器、创建文件并运行第一个脚本。先把开发环境弄顺。",
+        url: "https://code.visualstudio.com/docs/python/python-tutorial"
+      },
+      "python-download": {
+        title: "Python 下载与安装",
+        category: "工具",
+        source: "Python.org",
+        time: "20 分钟",
+        why: "安装时勾选 Add Python to PATH；装完在终端运行 python --version 验证。",
+        url: "https://www.python.org/downloads/"
+      },
+      "github-signup": {
+        title: "注册 GitHub 账号",
+        category: "工具",
+        source: "GitHub",
+        time: "10 分钟",
+        why: "用于保存代码、展示项目。用户名和邮箱会在第一次提交时写入 Git 配置。",
+        url: "https://github.com/signup"
+      },
+      "git-book": {
+        title: "Git 中文书：起步",
+        category: "工具",
+        source: "Git SCM",
+        time: "25 分钟",
+        why: "理解 add、commit、push 三个动作。第一周只需要会保存和上传版本。",
+        url: "https://git-scm.com/book/zh/v2"
+      },
+      "kaggle-pandas": {
+        title: "Kaggle Learn：Pandas",
+        category: "数据",
+        source: "Kaggle",
+        time: "前 4 课，约 2 小时",
+        why: "覆盖创建、索引、汇总和分组。跟着做时每课只保留一个自己的小练习。",
+        url: "https://www.kaggle.com/learn/pandas"
+      },
+      "pandas-10min": {
+        title: "pandas 10 分钟入门",
+        category: "数据",
+        source: "pandas Docs",
+        time: "20 分钟",
+        why: "速查 DataFrame 的常用操作，适合在写代码时边查边用。",
+        url: "https://pandas.pydata.org/docs/user_guide/10min.html"
+      },
+      "matplotlib": {
+        title: "Matplotlib：pyplot 教程",
+        category: "数据",
+        source: "Matplotlib Docs",
+        time: "45 分钟",
+        why: "只学 plot、scatter、hist 和标题、坐标轴。图表先表达清楚，再追求好看。",
+        url: "https://matplotlib.org/stable/tutorials/pyplot.html"
+      },
+      "kaggle-ml": {
+        title: "Kaggle Learn：Intro to Machine Learning",
+        category: "机器学习",
+        source: "Kaggle",
+        time: "约 1.5 小时",
+        why: "理解训练集、验证集和第一个模型。重点看模型评估，而不是背算法名字。",
+        url: "https://www.kaggle.com/learn/intro-to-machine-learning"
+      },
+      "sklearn-start": {
+        title: "scikit-learn：Getting Started",
+        category: "机器学习",
+        source: "scikit-learn Docs",
+        time: "45 分钟",
+        why: "掌握 fit、predict、score 的最小流程，以及训练集和测试集的划分。",
+        url: "https://scikit-learn.org/stable/getting_started.html"
+      },
+      "google-ml": {
+        title: "Google 机器学习速成课程",
+        category: "机器学习",
+        source: "Google Developers",
+        time: "选看 1 小时",
+        why: "只看‘框架’和‘模型训练’相关章节，用来补齐概念，不要从第一课刷到底。",
+        url: "https://developers.google.com/machine-learning/crash-course?hl=zh-cn"
+      },
+      "prompt-guide": {
+        title: "提示工程指南",
+        category: "大模型",
+        source: "Prompting Guide",
+        time: "1 小时",
+        why: "重点看提示词结构、few-shot、结构化输出和减少幻觉的方法。",
+        url: "https://www.promptingguide.ai/zh"
+      },
+      "anthropic-prompt": {
+        title: "Claude 提示词工程概览",
+        category: "大模型",
+        source: "Anthropic Docs",
+        time: "选看 30 分钟",
+        why: "用来比较不同的提示词写法。不要背模板，重点理解为什么要给上下文和限制。",
+        url: "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview"
+      },
+      "ollama": {
+        title: "Ollama：本地运行小模型",
+        category: "大模型",
+        source: "Ollama",
+        time: "可选，30 分钟",
+        why: "没有 API 预算时，可以用本地小模型体验调用流程。电脑配置有限就跳过。",
+        url: "https://ollama.com/"
+      },
+      "pypdf": {
+        title: "pypdf：提取 PDF 文本",
+        category: "项目",
+        source: "pypdf Docs",
+        time: "20 分钟",
+        why: "只读文本提取示例，学会遍历页面并保存页码。先处理 5 份资料，不要一开始做全量。",
+        url: "https://pypdf.readthedocs.io/en/stable/user/extract-text.html"
+      },
+      "sklearn-text": {
+        title: "scikit-learn：文本特征提取",
+        category: "项目",
+        source: "scikit-learn Docs",
+        time: "45 分钟",
+        why: "理解 TF-IDF 如何把文本变成向量，以及为什么可以做相似度检索。",
+        url: "https://scikit-learn.org/stable/modules/feature_extraction.html#text-feature-extraction"
+      },
+      "streamlit-start": {
+        title: "Streamlit：快速开始",
+        category: "项目",
+        source: "Streamlit Docs",
+        time: "45 分钟",
+        why: "学会文本输入、按钮、加载状态和结果展示。目标是做出能用的界面，不是做设计比赛。",
+        url: "https://docs.streamlit.io/get-started"
+      },
+      "github-readme": {
+        title: "GitHub：关于 README",
+        category: "工具",
+        source: "GitHub Docs",
+        time: "20 分钟",
+        why: "看一个项目说明应该包含什么。你的 README 要让陌生人知道如何安装和运行。",
+        url: "https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes"
+      },
+      "github-skills": {
+        title: "GitHub Skills",
+        category: "工具",
+        source: "GitHub",
+        time: "可选，30 分钟",
+        why: "通过短练习熟悉仓库、提交和协作流程。第八周之后再扩展。",
+        url: "https://skills.github.com/"
+      },
+      "3b1b-nn": {
+        title: "3Blue1Brown：神经网络",
+        category: "进阶",
+        source: "3Blue1Brown",
+        time: "选看 1 小时",
+        why: "用可视化的方式建立神经网络直觉。第八周之后看，不要挤占项目时间。",
+        url: "https://www.3blue1brown.com/topics/neural-networks"
+      },
+      "hf-course": {
+        title: "Hugging Face 课程",
+        category: "进阶",
+        source: "Hugging Face",
+        time: "8 周后继续",
+        why: "学习 Transformer、模型微调和部署。先完成主项目，再选择这条路线。",
+        url: "https://huggingface.co/learn"
+      },
+      "fastai": {
+        title: "fast.ai 实战课程",
+        category: "进阶",
+        source: "fast.ai",
+        time: "8 周后继续",
+        why: "适合想做完整深度学习项目的人。需要先有 Python 和基础模型经验。",
+        url: "https://course.fast.ai/"
+      }
+    };
+
+    const PREP = [
+      {
+        id: "prep-0",
+        title: "安装 Python 3.12+",
+        detail: "从 python.org 安装，勾选 Add Python to PATH；终端运行 python --version 确认。",
+        minutes: 20
+      },
+      {
+        id: "prep-1",
+        title: "安装 VS Code 与扩展",
+        detail: "安装 Python、Jupyter 扩展；选择一个固定文件夹作为学习工作区。",
+        minutes: 15
+      },
+      {
+        id: "prep-2",
+        title: "安装 Git 并注册 GitHub",
+        detail: "配置 user.name 和 user.email；运行 git --version，确认命令可用。",
+        minutes: 15
+      },
+      {
+        id: "prep-3",
+        title: "建立项目文件夹和虚拟环境",
+        detail: "创建 ai-learning；在终端运行 python -m venv .venv，Windows 用 .venv\\Scripts\\Activate.ps1 激活。",
+        minutes: 15
+      },
+      {
+        id: "prep-4",
+        title: "安装基础包",
+        detail: "安装 pandas、matplotlib、scikit-learn、jupyter；确认 import 时没有报错。",
+        minutes: 15
+      },
+      {
+        id: "prep-5",
+        title: "建立 GitHub 仓库",
+        detail: "创建 README.md，完成第一次 add / commit / push。先让代码有一个云端备份。",
+        minutes: 10
+      },
+      {
+        id: "prep-6",
+        title: "可选：准备模型 API",
+        detail: "设置约 20 元预算，密钥只放环境变量。没有 API 也能完成主线项目。",
+        minutes: 10,
+        optional: true
+      }
+    ];
+
+    const QUIZ = [
+      {
+        week: 1,
+        category: "Python",
+        q: "如果要保存“学生姓名 → 分数”的对应关系，哪种 Python 类型最合适？",
+        options: ["列表", "字典", "字符串", "布尔值"],
+        answer: 1,
+        explain: "字典用键值对保存映射，例如 scores['小明'] = 92，比在列表里查找更直接。"
+      },
+      {
+        week: 1,
+        category: "调试",
+        q: "Python 报错时，定位问题最有效的第一步是什么？",
+        options: ["只看终端第一行", "从 traceback 底部往上读，找到自己代码的最后一行", "删掉全部代码重写", "直接重启电脑"],
+        answer: 1,
+        explain: "traceback 底部通常给出错误类型和位置。先定位自己写的最后一行，再往上追原因。"
+      },
+      {
+        week: 2,
+        category: "pandas",
+        q: "在 pandas 中，查看每一列缺失值数量最直接的写法是？",
+        options: ["df.head()", "df.isna().sum()", "df.plot()", "df.to_csv()"],
+        answer: 1,
+        explain: "isna() 把缺失值标记为 True，sum() 按列统计 True 的数量。"
+      },
+      {
+        week: 2,
+        category: "数据表达",
+        q: "散点图最适合用来观察什么？",
+        options: ["两个数值变量之间的关系", "一段文本的情绪", "程序运行的时间顺序", "数据库表的结构"],
+        answer: 0,
+        explain: "散点图把两个数值变量放在横轴和纵轴上，适合观察相关趋势、离群点和分组差异。"
+      },
+      {
+        week: 3,
+        category: "机器学习",
+        q: "为什么要保留测试集？",
+        options: ["让训练速度更快", "估计模型面对没见过的数据时表现如何", "让数据看起来更多", "避免安装依赖"],
+        answer: 1,
+        explain: "测试集模拟未来的新数据。只用训练集评估会高估模型，因为它已经见过这些样本。"
+      },
+      {
+        week: 3,
+        category: "评估",
+        q: "训练准确率 99%，测试准确率只有 60%，最可能的问题是什么？",
+        options: ["模型过拟合", "Python 没安装好", "数据完全没有特征", "测试集太小"],
+        answer: 0,
+        explain: "训练集表现很好、测试集明显变差，是过拟合的典型信号。需要简化模型、增加数据或做正则化。"
+      },
+      {
+        week: 4,
+        category: "大模型",
+        q: "大模型的“幻觉”通常指什么？",
+        options: ["模型突然停止运行", "回答流畅、像真的，但缺少可靠依据", "模型只输出英文", "模型不能处理中文"],
+        answer: 1,
+        explain: "幻觉不是简单的语法错误，而是模型生成了看似合理但没有事实依据的内容。必须核验来源。"
+      },
+      {
+        week: 4,
+        category: "提示词",
+        q: "一个更可靠的提示词通常应该包含什么？",
+        options: ["只写“帮我写一下”", "目标、背景、输入材料、输出格式和限制条件", "越长越好", "只写一个关键词"],
+        answer: 1,
+        explain: "把任务目标和边界说清楚，模型才更容易稳定输出。示例和格式也会显著影响结果。"
+      },
+      {
+        week: 5,
+        category: "RAG",
+        q: "RAG 的核心思路更接近下面哪一项？",
+        options: ["先检索相关资料，再让模型基于资料回答", "只训练一个更大的模型", "把所有文件都粘贴进聊天框", "让模型记住整个互联网"],
+        answer: 0,
+        explain: "RAG 先找到与问题相关的片段，再把这些片段交给模型组织答案，并要求给出来源。"
+      },
+      {
+        week: 5,
+        category: "检索",
+        q: "在这个项目里，TF-IDF 主要用来做什么？",
+        options: ["生成漂亮网页", "把文本转成向量并做相似度检索", "替代 Git", "给 PDF 加密"],
+        answer: 1,
+        explain: "TF-IDF 用词频和稀有程度给文本加权，再通过余弦相似度找出与问题最接近的片段。"
+      },
+      {
+        week: 6,
+        category: "可靠性",
+        q: "如果检索到的资料没有回答问题，系统最好怎么处理？",
+        options: ["编一个听起来合理的答案", "明确说资料不足，并建议补充资料", "重复问题", "删除所有来源"],
+        answer: 1,
+        explain: "能拒答比强行回答更可靠。真实项目里，拒答和引用一样重要。"
+      },
+      {
+        week: 6,
+        category: "安全",
+        q: "模型 API 密钥应该放在哪里？",
+        options: ["直接写在代码第一行", "放在环境变量或本地 .env 文件，并加入 .gitignore", "发到群聊里", "写进 README"],
+        answer: 1,
+        explain: "密钥不能进入公开仓库。环境变量或本地 .env 是常见做法，同时要确保 .env 不被提交。"
+      },
+      {
+        week: 7,
+        category: "评估",
+        q: "hit@3 衡量的是什么？",
+        options: ["回答长度是否少于 3 行", "正确依据是否出现在返回的前 3 条结果中", "页面加载是否小于 3 秒", "模型是否会说 3 种语言"],
+        answer: 1,
+        explain: "hit@3 是检索评估指标：只要正确片段出现在前 3 条里，就算命中。"
+      },
+      {
+        week: 7,
+        category: "评估",
+        q: "评测集中加入“资料里没有答案”的问题，主要是为了检查什么？",
+        options: ["模型是否会拒答，而不是强行编造", "页面颜色是否好看", "PDF 是否加密", "代码是否有注释"],
+        answer: 0,
+        explain: "只测试可回答问题，无法发现系统的幻觉。加入无答案问题，才能检查拒答和证据边界。"
+      },
+      {
+        week: 8,
+        category: "项目表达",
+        q: "README 最重要的作用是什么？",
+        options: ["让陌生人理解项目并成功运行", "让仓库看起来更长", "替代所有代码注释", "隐藏项目的局限"],
+        answer: 0,
+        explain: "README 是项目的入口：说明问题、安装、运行、结构、局限和隐私事项。能复现比堆功能更重要。"
+      },
+      {
+        week: 8,
+        category: "项目方法",
+        q: "MVP 更接近下面哪个意思？",
+        options: ["功能尽可能多", "最小但完整的可用闭环", "只写计划不写代码", "只做界面不做功能"],
+        answer: 1,
+        explain: "MVP 不是半成品，而是最小但完整地解决一个真实问题。先跑通闭环，再逐步扩展。"
+      }
+    ];
+
+    const COURSE = [
+      {
+        id: "w1",
+        week: 1,
+        phase: "基础能力",
+        phaseKey: "foundation",
+        title: "Python 最小闭环",
+        short: "让代码真正跑起来",
+        summary: "变量、条件、循环、函数、文件、Git",
+        goal: "能独立运行小脚本、看懂报错，并完成第一次 GitHub 提交。",
+        hours: 6,
+        resources: ["cs50p", "py-docs", "vscode-python", "python-download", "git-book"],
+        objectives: [
+          "能读写变量、处理输入，并用 if 做基本判断",
+          "能用列表、字典和循环处理一小批数据",
+          "能把重复逻辑写成函数，并读写文本文件",
+          "遇到报错时能读懂 traceback，并做最小修复"
+        ],
+        days: [
+          {
+            day: "周一",
+            minutes: 45,
+            title: "变量、输入与判断",
+            task: "写 grade.py：输入平时分和期末分，先检查 0–100，再按 40% / 60% 计算总评。",
+            output: "正常输入、空输入、超范围输入都不崩溃。"
+          },
+          {
+            day: "周二",
+            minutes: 45,
+            title: "列表、字典与循环",
+            task: "写 wordcount.py：读取一个 txt，统计行数、词数、出现最多的 5 个词。",
+            output: "终端能打印统计结果，并能处理空文件。"
+          },
+          {
+            day: "周三",
+            minutes: 45,
+            title: "函数与文件",
+            task: "把两个脚本改成函数，并把统计结果写入 report.txt。",
+            output: "代码中没有大段重复；report.txt 有内容。"
+          },
+          {
+            day: "周四",
+            minutes: 45,
+            title: "异常与调试",
+            task: "故意触发 ValueError 和 FileNotFoundError，记录报错最后一行，再加输入检查和文件存在检查。",
+            output: "notes.md 中有 2 个报错案例和修复方法。"
+          },
+          {
+            day: "周五",
+            minutes: 45,
+            title: "脱离教程重写",
+            task: "打开空文件，不看原代码，重写成绩计算器；卡住时只查语法，不复制整段代码。",
+            output: "能独立从空白文件写出可运行版本。"
+          },
+          {
+            day: "周六",
+            minutes: 90,
+            title: "整理第一个仓库",
+            task: "给 3 个脚本补 README，写清运行方法；执行 git add / commit / push。",
+            output: "GitHub 仓库可访问，README 能指导别人运行。"
+          },
+          {
+            day: "周日",
+            minutes: 45,
+            title: "复盘与口述",
+            task: "不看代码，向 AI 或同学解释变量、if、循环、函数各解决什么问题；把解释写进 notes.md。",
+            output: "能用自己的话讲清 4 个概念。"
+          }
+        ],
+        deliverable: {
+          title: "Python 起步包",
+          outcome: "3 个能运行的小脚本 + 1 个可访问的 GitHub 仓库。",
+          steps: [
+            "把 grade.py、wordcount.py 和 report.txt 放进 01_python 文件夹。",
+            "补 README：每个脚本做什么、怎么运行、输入什么、输出什么。",
+            "提交代码并复制仓库链接，发给一个同学或存进自己的笔记。"
+          ]
+        },
+        acceptance: [
+          "3 个脚本都能从终端运行",
+          "至少处理 1 种错误输入",
+          "GitHub 上有代码和 README",
+          "能解释自己写的每一行主要逻辑"
+        ]
+      },
+      {
+        id: "w2",
+        week: 2,
+        phase: "基础能力",
+        phaseKey: "foundation",
+        title: "用 pandas 做数据分析",
+        short: "从表格里问出好问题",
+        summary: "读取、体检、筛选、分组、可视化、结论",
+        goal: "完成第一份有结论、有图表、能复现的数据分析。",
+        hours: 6,
+        resources: ["kaggle-pandas", "pandas-10min", "matplotlib"],
+        objectives: [
+          "读取表格并检查行列数、字段类型和缺失值",
+          "用筛选、分组和排序回答具体问题",
+          "选择合适的图表，而不是为了好看堆图",
+          "区分“数据说明了什么”和“数据不能说明什么”"
+        ],
+        days: [
+          {
+            day: "周一",
+            minutes: 45,
+            title: "读取 Iris 数据",
+            task: "用 scikit-learn 载入 Iris，保存为 CSV 再读回来；查看 head、shape、dtypes。",
+            output: "知道数据有多少行、多少列、每列是什么类型。"
+          },
+          {
+            day: "周二",
+            minutes: 45,
+            title: "数据体检",
+            task: "检查缺失值、重复值、describe；写下 5 个你想回答的问题。",
+            output: "5 个问题写在 notebook 的 Markdown 单元里。"
+          },
+          {
+            day: "周三",
+            minutes: 45,
+            title: "筛选与分组",
+            task: "用布尔筛选和 groupby 回答其中 3 个问题。",
+            output: "每个问题下面都有代码和一句结论。"
+          },
+          {
+            day: "周四",
+            minutes: 45,
+            title: "画 3 张图",
+            task: "画直方图、散点图、柱状图，各配一句“这张图说明了什么”。",
+            output: "3 张图保存为 PNG，文件名能看出内容。"
+          },
+          {
+            day: "周五",
+            minutes: 45,
+            title: "整理叙事",
+            task: "把 notebook 改成“问题—代码—解释”结构，删除无关输出。",
+            output: "从头运行不报错，别人能顺着读。"
+          },
+          {
+            day: "周六",
+            minutes: 90,
+            title: "完成分析交付",
+            task: "补齐 5 个问题、3 张图、3 条结论；检查路径使用相对路径。",
+            output: "01_iris_analysis.ipynb 可复现。"
+          },
+          {
+            day: "周日",
+            minutes: 45,
+            title: "写边界",
+            task: "写下 3 条这份数据不能说明什么，例如样本量、因果性、场景局限。",
+            output: "结论部分有“局限”小节。"
+          }
+        ],
+        deliverable: {
+          title: "Iris 数据分析报告",
+          outcome: "一份能从头运行、能讲出结论的数据分析 notebook。",
+          steps: [
+            "新建 02_data 文件夹，把数据、notebook 和图表放在一起。",
+            "在每个分析单元下面写一句人类可读的结论，不只留代码。",
+            "请一个同学只看结论，问他能否复述你的发现。"
+          ]
+        },
+        acceptance: [
+          "notebook 可以从头到尾运行",
+          "5 个问题都有代码或明确说明无法回答",
+          "至少 3 张图，每张有解释",
+          "写出 3 条数据局限"
+        ]
+      },
+      {
+        id: "w3",
+        week: 3,
+        phase: "基础能力",
+        phaseKey: "foundation",
+        title: "第一个机器学习模型",
+        short: "跑通训练、测试、评估",
+        summary: "特征、标签、基线、混淆矩阵、过拟合",
+        goal: "理解并亲手完成一次监督学习分类实验。",
+        hours: 6,
+        resources: ["kaggle-ml", "sklearn-start", "google-ml"],
+        objectives: [
+          "分清特征、标签、训练集和测试集",
+          "知道基线模型为什么重要",
+          "会看准确率、分类报告和混淆矩阵",
+          "能识别过拟合的典型信号"
+        ],
+        days: [
+          {
+            day: "周一",
+            minutes: 45,
+            title: "建立概念图",
+            task: "画一张流程图：数据 → 特征/标签 → 训练 → 测试 → 评估；写下 5 个术语的解释。",
+            output: "概念图 + 术语表。"
+          },
+          {
+            day: "周二",
+            minutes: 45,
+            title: "划分与基线",
+            task: "把 Iris 分成训练/测试集；计算“全部猜最多类别”的基线准确率。",
+            output: "得到基线分数，知道模型至少要超过它。"
+          },
+          {
+            day: "周三",
+            minutes: 45,
+            title: "训练逻辑回归",
+            task: "用 Pipeline 组合标准化和逻辑回归，输出 accuracy、classification_report、confusion_matrix。",
+            output: "测试集结果和混淆矩阵图。"
+          },
+          {
+            day: "周四",
+            minutes: 45,
+            title: "换一个模型",
+            task: "训练决策树，与逻辑回归放进同一张实验表比较。",
+            output: "实验表包含模型、参数、训练分数、测试分数。"
+          },
+          {
+            day: "周五",
+            minutes: 45,
+            title: "写结论",
+            task: "回答：哪个模型更合适？为什么？这个数据集为什么可能过于简单？",
+            output: "一段有证据的结论，不写“效果很好”。"
+          },
+          {
+            day: "周六",
+            minutes: 90,
+            title: "完成分类报告",
+            task: "整理 02_iris_classification.ipynb：基线、两个模型、混淆矩阵、结论、局限。",
+            output: "notebook 可复现并提交。"
+          },
+          {
+            day: "周日",
+            minutes: 45,
+            title: "解释过拟合",
+            task: "用“训练高分、测试低分”解释过拟合；举一个生活中的类比。",
+            output: "能用自己的话讲清 train/test 的意义。"
+          }
+        ],
+        deliverable: {
+          title: "分类实验报告",
+          outcome: "一份包含基线、两个模型、混淆矩阵和局限的机器学习 notebook。",
+          steps: [
+            "把数据划分、训练、预测、评估写成清晰的代码块。",
+            "在结论中同时写出最好结果和最明显的问题。",
+            "保存一张混淆矩阵图，并写一句如何读它。"
+          ]
+        },
+        acceptance: [
+          "同时报告基线准确率和测试准确率",
+          "至少比较 2 个模型",
+          "有混淆矩阵和分类报告",
+          "写出至少 2 条模型局限"
+        ]
+      },
+      {
+        id: "w4",
+        week: 4,
+        phase: "AI 使用",
+        phaseKey: "ai",
+        title: "大模型与提示词实验",
+        short: "把“随便问”变成可比较的方法",
+        summary: "token、上下文、幻觉、结构化输出、评测",
+        goal: "建立可重复的提示词实验，理解大模型的能力边界。",
+        hours: 6,
+        resources: ["prompt-guide", "anthropic-prompt", "ollama"],
+        objectives: [
+          "理解 token、上下文、温度、知识截止和幻觉",
+          "写出包含目标、背景、格式、限制的提示词",
+          "用测试集比较提示词，而不是凭感觉",
+          "知道什么时候应该拒答或要求人工核验"
+        ],
+        days: [
+          {
+            day: "周一",
+            minutes: 45,
+            title: "理解大模型",
+            task: "写 1 页笔记，解释 token、上下文窗口、温度、知识截止、幻觉；各举一个例子。",
+            output: "notes.md 中有 5 个概念和 5 个例子。"
+          },
+          {
+            day: "周二",
+            minutes: 45,
+            title: "写 3 版提示词",
+            task: "为“总结课程材料”写 3 版：自由版、结构化版、带限制和拒答规则版。",
+            output: "3 个版本并排保存，能看出差异。"
+          },
+          {
+            day: "周三",
+            minutes: 45,
+            title: "做小评测",
+            task: "用 3 版提示词测试同样 5 段文本，记录格式正确、事实错误、遗漏和有用度。",
+            output: "15 条测试记录。"
+          },
+          {
+            day: "周四",
+            minutes: 45,
+            title: "结构化与拒答",
+            task: "让模型输出 JSON；再测试资料不足时是否明确说不知道。",
+            output: "至少 1 个 JSON 样例和 1 个拒答样例。"
+          },
+          {
+            day: "周五",
+            minutes: 45,
+            title: "选出最佳版本",
+            task: "根据记录选最佳提示词，写出选择理由和仍存在的问题。",
+            output: "03_prompt_lab.md 有评分表。"
+          },
+          {
+            day: "周六",
+            minutes: 90,
+            title: "做总结小工具",
+            task: "有 API 就写 summarize.py；没有 API 就用网页版完成 10 次人工测试并记录。",
+            output: "可运行脚本或完整测试记录。"
+          },
+          {
+            day: "周日",
+            minutes: 45,
+            title: "写局限",
+            task: "总结 5 条大模型局限，并给每条配一个核验动作。",
+            output: "局限 + 核验清单。"
+          }
+        ],
+        deliverable: {
+          title: "提示词实验报告",
+          outcome: "一份有对照、有评分、有结论的提示词实验记录。",
+          steps: [
+            "把 3 个提示词版本、5 段测试文本和评分表放在一个文档里。",
+            "选出最佳版本，并写出它在哪些情况下仍然不可靠。",
+            "列出 5 条“不能直接相信模型”的场景。"
+          ]
+        },
+        acceptance: [
+          "至少 15 条提示词测试记录",
+          "最佳版本有数据依据",
+          "能识别幻觉和资料不足",
+          "知道哪些内容不能上传给在线模型"
+        ]
+      },
+      {
+        id: "w5",
+        week: 5,
+        phase: "项目实战",
+        phaseKey: "project",
+        title: "课程资料检索助手 MVP",
+        short: "先检索，再回答",
+        summary: "PDF 提取、切块、TF-IDF、Top 3、来源",
+        goal: "从 5–10 份课程资料中找出最相关的段落，并显示来源和页码。",
+        hours: 6,
+        resources: ["pypdf", "sklearn-text"],
+        pipeline: ["PDF / 笔记", "文本分块", "TF-IDF 检索", "Top 3 片段"],
+        objectives: [
+          "把 PDF 文本提取成结构化数据",
+          "理解切块、索引和相似度检索",
+          "用 TF-IDF 做一个小型检索系统",
+          "用固定问题集记录命中与失败"
+        ],
+        days: [
+          {
+            day: "周一",
+            minutes: 45,
+            title: "定义项目与测试集",
+            task: "选 5–10 份课程 PDF/笔记；写 15 个问题（10 个可回答、5 个不可回答）到 questions.csv。",
+            output: "测试集有 15 行，包含问题、类型、标准答案/依据。"
+          },
+          {
+            day: "周二",
+            minutes: 45,
+            title: "提取文本",
+            task: "先运行 python -m pip install pypdf，再用它提取每页文本，保存 pages.jsonl，包含 doc、page、text。",
+            output: "能统计每份文档成功提取了多少页。"
+          },
+          {
+            day: "周三",
+            minutes: 45,
+            title: "切块",
+            task: "按约 500 字、重叠 100 字切块，保存 chunks.jsonl；过滤空块。",
+            output: "每块都有来源文件名和页码。"
+          },
+          {
+            day: "周四",
+            minutes: 45,
+            title: "检索",
+            task: "用 TF-IDF + 余弦相似度返回前 3 个片段。",
+            output: "命令行输入问题能打印 3 条来源和片段。"
+          },
+          {
+            day: "周五",
+            minutes: 45,
+            title: "首轮测试",
+            task: "跑 5 个问题，记录正确片段是否进入前 3，以及失败原因。",
+            output: "至少 5 条检索日志。"
+          },
+          {
+            day: "周六",
+            minutes: 90,
+            title: "整理 MVP",
+            task: "完成 build_index.py、search.py、requirements.txt 和 README。",
+            output: "换一个终端也能按 README 跑起来。"
+          },
+          {
+            day: "周日",
+            minutes: 45,
+            title: "只调一次参",
+            task: "只调整一次 chunk_size 或 top_k，重新测试并比较，不要无限调参。",
+            output: "前后对比记录。"
+          }
+        ],
+        deliverable: {
+          title: "检索助手 MVP",
+          outcome: "能从课程资料中返回相关片段、文件名和页码的命令行工具。",
+          steps: [
+            "新建 05_rag_assistant，放入 corpus、pages.jsonl、chunks.jsonl 和两个脚本。",
+            "让 build_index.py 从原始资料重新构建索引，search.py 只负责查询。",
+            "在 README 里写清 3 条示例问题和预期输出。"
+          ]
+        },
+        acceptance: [
+          "索引能从原始资料重新构建",
+          "输入问题返回 Top 3 片段",
+          "每条结果有文件名和页码",
+          "10 个可回答问题中至少 6 个命中 Top 3"
+        ]
+      },
+      {
+        id: "w6",
+        week: 6,
+        phase: "项目实战",
+        phaseKey: "project",
+        title: "基于资料回答",
+        short: "让答案有出处，也会说不知道",
+        summary: "证据、引用、拒答、API、对比评测",
+        goal: "实现“问题 → 检索 → 回答 → 来源”的完整闭环，并保留无 API 模式。",
+        hours: 6,
+        resources: ["ollama", "prompt-guide"],
+        pipeline: ["问题", "检索片段", "回答规则", "带来源答案"],
+        objectives: [
+          "设计带引用规则的回答提示词",
+          "处理 API 密钥、超时和错误",
+          "识别资料不足并拒答",
+          "比较抽取式结果和生成式回答"
+        ],
+        days: [
+          {
+            day: "周一",
+            minutes: 45,
+            title: "设计回答规则",
+            task: "写提示词：只能基于给定片段回答；每个关键结论标来源；证据不足就说不知道。",
+            output: "提示词版本 v1 和 3 条测试用例。"
+          },
+          {
+            day: "周二",
+            minutes: 45,
+            title: "接 API（可选）",
+            task: "有 API 时，把密钥放进环境变量并完成一次最小调用；没有 API 时，记录 --no-llm 回退方案，继续做检索版。",
+            output: "有 API 能跑通一次；没有 API 也能明确说明回退方式。"
+          },
+          {
+            day: "周三",
+            minutes: 45,
+            title: "让系统拒答",
+            task: "用 3 个资料中无答案的问题测试拒答；修改提示词或相似度阈值。",
+            output: "拒答样例至少 3 条。"
+          },
+          {
+            day: "周四",
+            minutes: 45,
+            title: "两种方式对比",
+            task: "用 10 个问题比较“直接返回片段”和“模型生成答案”：忠实度、引用、可读性。",
+            output: "10 条对比记录。"
+          },
+          {
+            day: "周五",
+            minutes: 45,
+            title: "修 3 个错误",
+            task: "找出最严重的 3 个错误：引用错、答非所问、强行回答；逐一修复。",
+            output: "错误—原因—修复记录。"
+          },
+          {
+            day: "周六",
+            minutes: 90,
+            title: "完成端到端",
+            task: "完成 ask.py，支持完整问答和 --no-llm 回退；更新 README。",
+            output: "一条命令能从问题走到答案和来源。"
+          },
+          {
+            day: "周日",
+            minutes: 45,
+            title: "检查来源",
+            task: "抽查 5 个回答，逐条确认引用是否真的支持结论。",
+            output: "引用核验表。"
+          }
+        ],
+        deliverable: {
+          title: "有来源的问答助手",
+          outcome: "一个能基于资料回答、标注来源、在证据不足时拒答的完整流程。",
+          steps: [
+            "把回答提示词、检索参数和 API 配置分开，方便替换模型。",
+            "保留 --no-llm 模式，让没有 API 的人也能使用检索功能。",
+            "准备 3 个无答案问题，证明系统不会强行编造。"
+          ]
+        },
+        acceptance: [
+          "完整流程可运行",
+          "回答中能看到来源",
+          "3 个无答案问题能拒答",
+          "没有 API 时仍能使用检索模式"
+        ]
+      },
+      {
+        id: "w7",
+        week: 7,
+        phase: "项目实战",
+        phaseKey: "project",
+        title: "网页界面与评估",
+        short: "把命令行工具变成作品",
+        summary: "Streamlit、交互状态、评测指标、失败案例",
+        goal: "做出一个可操作的网页界面，并用数据说明它哪里好、哪里坏。",
+        hours: 6,
+        resources: ["streamlit-start"],
+        pipeline: ["Streamlit 页面", "检索 / 回答", "来源展示", "评测表"],
+        objectives: [
+          "用 Streamlit 做出最小可用界面",
+          "处理空输入、加载和错误状态",
+          "设计并运行 15 题评测",
+          "用失败案例指导改进"
+        ],
+        days: [
+          {
+            day: "周一",
+            minutes: 45,
+            title: "Streamlit 基础",
+            task: "先运行 python -m pip install streamlit，再做一个最小页面：标题、文本输入、按钮、结果区域。",
+            output: "本地能打开页面并交互。"
+          },
+          {
+            day: "周二",
+            minutes: 45,
+            title: "接上检索",
+            task: "把问题和 Top 3 来源接到界面，来源用可展开区域显示。",
+            output: "网页能显示答案和来源。"
+          },
+          {
+            day: "周三",
+            minutes: 45,
+            title: "状态与边界",
+            task: "加 top_k 滑块、加载提示、空输入提示和异常提示。",
+            output: "常见的 4 种状态都有反馈。"
+          },
+          {
+            day: "周四",
+            minutes: 45,
+            title: "正式评测",
+            task: "用 15 个问题评测命中率、引用正确率、拒答正确率；记录每条结果。",
+            output: "评测表 15 行。"
+          },
+          {
+            day: "周五",
+            minutes: 45,
+            title: "写评测报告",
+            task: "写 evaluation.md：指标定义、总体结果、3 个失败案例、下一步。",
+            output: "别人能看懂你的评估方法。"
+          },
+          {
+            day: "周六",
+            minutes: 90,
+            title: "修最有价值的问题",
+            task: "按影响大小修复 3 个问题，重新跑评测并保存截图。",
+            output: "修改前后指标或案例对比。"
+          },
+          {
+            day: "周日",
+            minutes: 45,
+            title: "准备演示",
+            task: "写 3 分钟演示提纲：问题、演示、实现、评测、局限。",
+            output: "一份可照着讲的提纲。"
+          }
+        ],
+        deliverable: {
+          title: "可交互的检索应用",
+          outcome: "一个能输入问题、查看答案和来源的网页，以及一份评测报告。",
+          steps: [
+            "把命令行的检索和回答逻辑封装成函数，再由 Streamlit 调用。",
+            "让每次结果都显示文件名、页码和片段，而不是只显示答案。",
+            "保存应用首页和结果页截图，放进 README。"
+          ]
+        },
+        acceptance: [
+          "网页能本地启动并完成问答",
+          "15 个问题都有评测记录",
+          "至少分析 3 个失败案例",
+          "演示能说清项目价值与局限"
+        ]
+      },
+      {
+        id: "w8",
+        week: 8,
+        phase: "项目实战",
+        phaseKey: "project",
+        title: "整理、演示与复盘",
+        short: "让别人能运行，也让自己知道下一步",
+        summary: "README、依赖、干净环境、演示、方向选择",
+        goal: "把项目整理成可展示的作品，并决定下一阶段方向。",
+        hours: 6,
+        resources: ["github-readme", "github-skills", "3b1b-nn", "hf-course", "fastai"],
+        pipeline: ["可运行项目", "清晰 README", "3 分钟演示", "下一阶段方向"],
+        objectives: [
+          "写出别人能照着运行的 README",
+          "管理依赖、密钥和仓库文件",
+          "用 3 分钟讲清项目",
+          "根据体验选择下一阶段方向"
+        ],
+        days: [
+          {
+            day: "周一",
+            minutes: 45,
+            title: "写 README",
+            task: "写清项目目的、截图、安装、运行、目录、局限和隐私说明。",
+            output: "README 能让陌生人开始使用。"
+          },
+          {
+            day: "周二",
+            minutes: 45,
+            title: "清理仓库",
+            task: "补 requirements.txt、.gitignore、.env.example；删除密钥、缓存和大文件。",
+            output: "仓库无密钥、无无关文件。"
+          },
+          {
+            day: "周三",
+            minutes: 45,
+            title: "干净环境测试",
+            task: "换一个新文件夹重新克隆，按 README 安装运行；记录所有卡点。",
+            output: "从零运行成功，或明确修复步骤。"
+          },
+          {
+            day: "周四",
+            minutes: 45,
+            title: "写演示稿",
+            task: "按“问题—演示—实现—评测—局限—下一步”写 3 分钟讲稿。",
+            output: "讲稿不超过 500 字。"
+          },
+          {
+            day: "周五",
+            minutes: 45,
+            title: "试讲",
+            task: "向同学/AI 试讲并收集 3 个问题；补一页 FAQ。",
+            output: "FAQ 至少 3 条。"
+          },
+          {
+            day: "周六",
+            minutes: 90,
+            title: "发布作品",
+            task: "补截图、最终提交、打版本标签；确认公开仓库不含隐私数据。",
+            output: "可分享的 GitHub 项目。"
+          },
+          {
+            day: "周日",
+            minutes: 45,
+            title: "复盘与选方向",
+            task: "写下 3 件真正学会的事、2 个仍薄弱的地方、1 个下一阶段方向。",
+            output: "下一阶段学习单。"
+          }
+        ],
+        deliverable: {
+          title: "可分享的 AI 作品",
+          outcome: "一个别人能运行、你能讲清楚的课程资料检索助手。",
+          steps: [
+            "在新文件夹里从零克隆并运行项目，修掉 README 与实际不一致的地方。",
+            "准备一张架构图、一张界面截图和一张评测结果表。",
+            "录一段 3 分钟演示，或向 3 个同学现场演示。"
+          ]
+        },
+        acceptance: [
+          "新环境能按 README 跑起来",
+          "仓库无密钥和隐私数据",
+          "3 分钟演示可完成",
+          "写清下一阶段方向"
+        ]
+      }
+    ];
+
+    const NEXT_DIRECTIONS = [
+      {
+        title: "应用工程",
+        subtitle: "把 AI 做成产品",
+        body: "继续学习 FastAPI、向量数据库、评测和部署，做 2–3 个有真实用户的小工具。适合喜欢搭东西、快速看到结果的人。",
+        tags: ["FastAPI", "评测", "部署"]
+      },
+      {
+        title: "算法与研究",
+        subtitle: "理解模型为什么有效",
+        body: "系统补线性代数、概率统计和 PyTorch，尝试论文复现、课程项目或加入实验室。适合愿意长期啃硬问题的人。",
+        tags: ["数学", "PyTorch", "论文"]
+      },
+      {
+        title: "数据与产品",
+        subtitle: "用 AI 回答真实问题",
+        body: "学习 SQL、实验设计、用户研究和可视化，把模型能力放进具体场景。适合喜欢观察人、分析业务的人。",
+        tags: ["SQL", "实验", "用户研究"]
+      }
+    ];
+
+    const STORAGE_KEY = "ai-starter-lab-progress-v1";
+    const VIEW_TITLES = {
+      dashboard: "学习总览",
+      roadmap: "8 周路线",
+      resources: "学习资源",
+      quiz: "自测题库",
+      notes: "学习复盘"
+    };
+
+    const viewRoot = document.getElementById("viewRoot");
+    const weekNav = document.getElementById("weekNav");
+    const sideRing = document.getElementById("sideRing");
+    const sidePercent = document.getElementById("sidePercent");
+    const sideCount = document.getElementById("sideCount");
+    const breadcrumb = document.getElementById("breadcrumb");
+    const saveStateEl = document.getElementById("saveState");
+    const toastEl = document.getElementById("toast");
+    const menuBtn = document.getElementById("menuBtn");
+    const mobileBackdrop = document.getElementById("mobileBackdrop");
+    const focusModal = document.getElementById("focusModal");
+    const focusTitle = document.getElementById("focusTitle");
+    const focusMeta = document.getElementById("focusMeta");
+    const focusClock = document.getElementById("focusClock");
+    const focusStart = document.getElementById("focusStart");
+    const focusReset = document.getElementById("focusReset");
+    const focusComplete = document.getElementById("focusComplete");
+    const focusClose = document.getElementById("focusClose");
+
+    function defaultState() {
+      return {
+        completed: {},
+        notes: {},
+        quizBest: null
+      };
+    }
+
+    function normalizeState(raw) {
+      const base = defaultState();
+      if (!raw || typeof raw !== "object") {
+        return base;
+      }
+      const completed = {};
+      if (raw.completed && typeof raw.completed === "object") {
+        Object.keys(raw.completed).forEach((key) => {
+          if (raw.completed[key]) {
+            completed[key] = true;
+          }
+        });
+      }
+      const notes = {};
+      if (raw.notes && typeof raw.notes === "object") {
+        Object.keys(raw.notes).forEach((key) => {
+          if (typeof raw.notes[key] === "string") {
+            notes[key] = raw.notes[key];
+          }
+        });
+      }
+      const bestNumber = Number(raw.quizBest);
+      const quizBest = raw.quizBest !== null && raw.quizBest !== undefined && Number.isFinite(bestNumber)
+        ? Math.max(0, Math.min(8, bestNumber))
+        : null;
+      return { completed, notes, quizBest };
+    }
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? normalizeState(JSON.parse(raw)) : defaultState();
+      } catch (error) {
+        return defaultState();
+      }
+    }
+
+    let state = loadState();
+    let currentView = "dashboard";
+    let currentWeekId = null;
+    let currentNotesWeekId = "w1";
+    let resourceFilter = "全部";
+    let resourceQuery = "";
+    let currentQuiz = null;
+    let focusTask = null;
+    let focusSeconds = 25 * 60;
+    let focusEndAt = 0;
+    let focusTimer = null;
+    let focusRunning = false;
+    let saveLabelTimer = null;
+    let toastTimer = null;
+
+    function esc(value) {
+      const map = {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      };
+      return String(value ?? "").replace(/[&<>"']/g, (char) => map[char]);
+    }
+
+    function shuffle(items) {
+      const copy = [...items];
+      for (let index = copy.length - 1; index > 0; index -= 1) {
+        const randomIndex = Math.floor(Math.random() * (index + 1));
+        [copy[index], copy[randomIndex]] = [copy[randomIndex], copy[index]];
+      }
+      return copy;
+    }
+
+    function weekById(id) {
+      return COURSE.find((week) => week.id === id) || null;
+    }
+
+    function isDone(id) {
+      return Boolean(state.completed[id]);
+    }
+
+    function weekStats(week) {
+      const total = week.days.length + week.acceptance.length;
+      let done = 0;
+      week.days.forEach((_, index) => {
+        if (isDone(`${week.id}-d${index}`)) {
+          done += 1;
+        }
+      });
+      week.acceptance.forEach((_, index) => {
+        if (isDone(`${week.id}-a${index}`)) {
+          done += 1;
+        }
+      });
+      return {
+        done,
+        total,
+        pct: total ? Math.round((done / total) * 100) : 0
+      };
+    }
+
+    function courseStats() {
+      let total = 0;
+      let done = 0;
+      let remainingMinutes = 0;
+      COURSE.forEach((week) => {
+        week.days.forEach((day, index) => {
+          total += 1;
+          const id = `${week.id}-d${index}`;
+          if (isDone(id)) {
+            done += 1;
+          } else {
+            remainingMinutes += day.minutes;
+          }
+        });
+        week.acceptance.forEach((_, index) => {
+          total += 1;
+          if (isDone(`${week.id}-a${index}`)) {
+            done += 1;
+          }
+        });
+      });
+      return {
+        total,
+        done,
+        pct: total ? Math.round((done / total) * 100) : 0,
+        remainingMinutes
+      };
+    }
+
+    function prepStats() {
+      const required = PREP.filter((item) => !item.optional);
+      const done = required.filter((item) => isDone(item.id)).length;
+      return {
+        done,
+        total: required.length,
+        pct: Math.round((done / required.length) * 100)
+      };
+    }
+
+    function getNote(key) {
+      return state.notes[key] || "";
+    }
+
+    function setSaveLabel(text) {
+      saveStateEl.textContent = text;
+      window.clearTimeout(saveLabelTimer);
+      saveLabelTimer = window.setTimeout(() => {
+        saveStateEl.textContent = "进度自动保存";
+      }, 1800);
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        setSaveLabel("已保存");
+      } catch (error) {
+        setSaveLabel("浏览器阻止了本地保存");
+      }
+    }
+
+    function showToast(message) {
+      toastEl.textContent = message;
+      toastEl.classList.add("show");
+      window.clearTimeout(toastTimer);
+      toastTimer = window.setTimeout(() => {
+        toastEl.classList.remove("show");
+      }, 2300);
+    }
+
+    function phaseBadgeClass(phaseKey) {
+      if (phaseKey === "ai") {
+        return "orange";
+      }
+      if (phaseKey === "project") {
+        return "gold";
+      }
+      return "";
+    }
+
+    function getNextAction() {
+      for (const item of PREP) {
+        if (!item.optional && !isDone(item.id)) {
+          return {
+            type: "prep",
+            id: item.id,
+            title: item.title,
+            detail: item.detail,
+            output: "完成开跑准备，再进入第 1 周。",
+            minutes: item.minutes
+          };
+        }
+      }
+
+      for (const week of COURSE) {
+        for (const [index, day] of week.days.entries()) {
+          const id = `${week.id}-d${index}`;
+          if (!isDone(id)) {
+            return {
+              type: "day",
+              id,
+              week,
+              day,
+              dayIndex: index,
+              title: `${day.day} · ${day.title}`,
+              detail: day.task,
+              output: day.output,
+              minutes: day.minutes
+            };
+          }
+        }
+        for (const [index, acceptance] of week.acceptance.entries()) {
+          const id = `${week.id}-a${index}`;
+          if (!isDone(id)) {
+            return {
+              type: "acceptance",
+              id,
+              week,
+              acceptance,
+              title: `完成第 ${week.week} 周验收`,
+              detail: acceptance,
+              output: "所有验收项打勾后，本周交付才算真正完成。",
+              minutes: 20
+            };
+          }
+        }
+      }
+      return null;
+    }
+
+    function nextActionHTML() {
+      const next = getNextAction();
+      if (!next) {
+        return `
+          <div class="next-card">
+            <span class="next-kicker">ALL DONE · 主线完成</span>
+            <h2>你已经跑完一整条 AI 学习闭环</h2>
+            <p class="next-task">现在最重要的不是再收藏一门课，而是从“应用工程、算法研究、数据与产品”里选一个方向，继续做下一个作品。</p>
+            <div class="next-output"><strong>下一步建议：</strong>回看第 8 周复盘，把“下一阶段学习单”变成一个新的 4 周计划。</div>
+            <div class="next-actions">
+              <button class="primary-btn" type="button" data-view="roadmap">看下一阶段方向</button>
+              <button class="secondary-btn" type="button" data-view="notes">整理复盘</button>
+            </div>
+          </div>
+        `;
+      }
+
+      const label = next.type === "prep"
+        ? "开跑准备"
+        : next.type === "acceptance"
+          ? `第 ${next.week.week} 周 · 验收`
+          : `第 ${next.week.week} 周 · ${next.day.day}`;
+      const primaryAction = next.type === "prep" ? "go-prep" : "go-next";
+      const primaryText = next.type === "prep" ? "查看准备清单" : "打开今天的任务";
+
+      return `
+        <div class="next-card">
+          <span class="next-kicker">${esc(label)}</span>
+          <h2>${esc(next.title)}</h2>
+          <p class="next-task">${esc(next.detail)}</p>
+          <div class="next-output"><strong>今天的小交付：</strong>${esc(next.output)}</div>
+          <div class="next-actions">
+            <button class="primary-btn" type="button" data-action="${primaryAction}">${primaryText}</button>
+            <button class="secondary-btn" type="button" data-action="focus-next">25 分钟专注</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function weekCardHTML(week) {
+      return `
+        <div class="week-card" role="button" tabindex="0" data-week="${week.id}" aria-label="打开第 ${week.week} 周：${esc(week.title)}">
+          <div class="week-card-top">
+            <span class="week-index">${String(week.week).padStart(2, "0")}</span>
+            <span class="badge ${phaseBadgeClass(week.phaseKey)}">${esc(week.phase)}</span>
+          </div>
+          <h3>${esc(week.title)}</h3>
+          <p>${esc(week.short)} · ${esc(week.summary)}</p>
+          <div class="week-card-foot">
+            <div class="progress-track"><i data-week-bar="${week.id}"></i></div>
+            <span data-week-count="${week.id}">0 / 0</span>
+          </div>
+        </div>
+      `;
+    }
+
+    function prepHTML() {
+      return PREP.map((item) => {
+        const done = isDone(item.id);
+        return `
+          <label class="check-row ${done ? "done" : ""}" id="${item.id}">
+            <input type="checkbox" data-task-id="${item.id}" ${done ? "checked" : ""} aria-label="${esc(item.title)}">
+            <span>${esc(item.title)}${item.optional ? "（可选）" : ""}</span>
+            <small>${item.optional ? "可选" : "准备"}</small>
+          </label>
+        `;
+      }).join("");
+    }
+
+    function renderDashboard() {
+      const stats = courseStats();
+      const prep = prepStats();
+      viewRoot.innerHTML = `
+        <section class="hero">
+          <div class="hero-copy">
+            <div class="eyebrow">ZERO TO ONE · AI LEARNING LAB</div>
+            <h1>从会用 AI，<br><em>到做出一个 AI 作品。</em></h1>
+            <p>8 周、每周约 6 小时、只做一个主项目。你不需要先学完数学，也不需要一口气刷完课程；每天完成一个小交付，周末把它们连成作品。</p>
+            <div class="hero-actions">
+              <button class="primary-btn" type="button" data-action="focus-next">开始下一步</button>
+              <button class="secondary-btn" type="button" data-view="roadmap">浏览 8 周路线</button>
+            </div>
+          </div>
+          <div class="hero-panel">
+            <div class="mini-label"><span>NEXT MOVE</span><span>自动选择下一步</span></div>
+            <div id="nextActionBody">${nextActionHTML()}</div>
+          </div>
+        </section>
+
+        <section class="stat-grid" aria-label="学习进度概览">
+          <div class="stat-card">
+            <small>总进度</small>
+            <strong data-course-percent>0%</strong>
+            <span><span data-course-done>0</span> / <span data-course-total>88</span> 个行动项</span>
+          </div>
+          <div class="stat-card">
+            <small>预计剩余</small>
+            <strong data-remaining-hours>48</strong>
+            <span>小时 · 按每日任务估算</span>
+          </div>
+          <div class="stat-card">
+            <small>主线项目</small>
+            <strong>1</strong>
+            <span>课程资料检索助手</span>
+          </div>
+          <div class="stat-card">
+            <small>自测最佳</small>
+            <strong data-quiz-best>--</strong>
+            <span>答对题数 / 8</span>
+          </div>
+        </section>
+
+        <section class="panel soft" style="margin-bottom:22px;">
+          <div class="callout">
+            <b>怎么用</b>
+            <span>先勾完准备清单；之后每天点“开始下一步”，完成 45 分钟任务并打卡；每周六勾选验收，周日写复盘。页面会自动保存进度，也会根据你已完成的内容推荐下一项。</span>
+          </div>
+        </section>
+
+        <section class="panel prep-card" id="prepCard">
+          <div class="prep-copy">
+            <div class="eyebrow">BEFORE WEEK 01</div>
+            <h3>先花 90–100 分钟，把环境搭好</h3>
+            <p>这一步不产生“作品”，但会决定你后面卡不卡。按顺序完成，遇到问题先记录报错原文，再搜索或问 AI。</p>
+            <div class="prep-progress">
+              <div class="progress-track"><i id="prepBar"></i></div>
+              <small id="prepCount">${prep.done} / ${prep.total} 必做已完成</small>
+            </div>
+          </div>
+          <div class="check-list">${prepHTML()}</div>
+        </section>
+
+        <section class="section-block">
+          <div class="section-head">
+            <div>
+              <div class="eyebrow">LEARNING MAP</div>
+              <h2>8 周，三个阶段</h2>
+            </div>
+            <button class="ghost-btn" type="button" data-view="roadmap">查看完整路线</button>
+          </div>
+          <div class="week-grid">${COURSE.map(weekCardHTML).join("")}</div>
+        </section>
+
+        <section class="section-block panel project-preview">
+          <div>
+            <div class="eyebrow">FINAL PROJECT</div>
+            <h3>最后，你会做出什么？</h3>
+            <p>一个“课程资料检索助手”：上传自己的课程 PDF 或笔记，输入问题，系统先找相关段落，再给出带来源的回答；资料不足时，它应该明确说不知道。</p>
+            <div class="pipeline">
+              <span>资料</span><i>→</i><span>检索</span><i>→</i><span>回答</span><i>→</i><span>来源</span>
+            </div>
+          </div>
+          <div class="project-diagram" aria-label="项目流程示意">
+            <div class="diagram-node"><b>01</b><span>准备 5–10 份课程资料</span></div>
+            <div class="diagram-node"><b>02</b><span>提取文本并切块</span></div>
+            <div class="diagram-node"><b>03</b><span>检索最相关片段</span></div>
+            <div class="diagram-node"><b>04</b><span>回答并标注来源</span></div>
+          </div>
+        </section>
+      `;
+    }
+
+    function roadmapRowHTML(week) {
+      const tags = week.summary.split("、").slice(0, 4);
+      return `
+        <div class="roadmap-row" role="button" tabindex="0" data-week="${week.id}" aria-label="打开第 ${week.week} 周：${esc(week.title)}">
+          <div class="roadmap-num">${String(week.week).padStart(2, "0")}</div>
+          <div class="roadmap-copy">
+            <h3>${esc(week.title)}</h3>
+            <p>${esc(week.goal)}</p>
+            <div class="roadmap-tags">
+              ${tags.map((tag) => `<span class="tag">${esc(tag)}</span>`).join("")}
+            </div>
+          </div>
+          <div class="roadmap-progress">
+            <strong data-week-count="${week.id}">0 / 0</strong>
+            <small>行动项完成</small>
+            <div class="progress-track"><i data-week-bar="${week.id}"></i></div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderRoadmap() {
+      viewRoot.innerHTML = `
+        <section class="page-head">
+          <div class="eyebrow">YOUR 8-WEEK ROUTE</div>
+          <h1>不是“学完 AI”，<br>而是先跑通一条完整路径。</h1>
+          <p>前 3 周建立编程、数据和模型的基本手感；第 4 周学会把大模型当作可评测的工具；后 4 周把能力收束到一个能演示、能复现的项目里。</p>
+        </section>
+
+        <section class="phase-grid">
+          <div class="phase-card" data-n="01">
+            <span class="badge">W1–W3</span>
+            <h3>基础能力</h3>
+            <p>Python、pandas、机器学习分类。目标是能运行、能解释、能评估，而不是背概念。</p>
+          </div>
+          <div class="phase-card" data-n="02">
+            <span class="badge orange">W4</span>
+            <h3>AI 使用</h3>
+            <p>理解大模型、设计提示词、做对照评测。把“问 AI”变成一种可重复的方法。</p>
+          </div>
+          <div class="phase-card" data-n="03">
+            <span class="badge gold">W5–W8</span>
+            <h3>项目实战</h3>
+            <p>检索、回答、网页界面、评测、演示。最后留下一个别人能运行的作品。</p>
+          </div>
+        </section>
+
+        <section class="panel soft" style="margin-bottom:18px;">
+          <div class="callout">
+            <b>执行原则</b>
+            <span>每周只追一个交付物；先跑通再优化；AI 先给提示，再给代码；失败案例要写进复盘。完成比“看起来学了很多”重要。</span>
+          </div>
+        </section>
+
+        <section class="roadmap-list">
+          ${COURSE.map(roadmapRowHTML).join("")}
+        </section>
+
+        <section class="section-block">
+          <div class="section-head">
+            <div>
+              <div class="eyebrow">AFTER THE FIRST LOOP</div>
+              <h2>完成后往哪走</h2>
+            </div>
+          </div>
+          <div class="direction-grid">
+            ${NEXT_DIRECTIONS.map((direction) => `
+              <div class="direction-card">
+                <span class="badge gray">${esc(direction.subtitle)}</span>
+                <h3>${esc(direction.title)}</h3>
+                <p>${esc(direction.body)}</p>
+                <div class="roadmap-tags">
+                  ${direction.tags.map((tag) => `<span class="tag">${esc(tag)}</span>`).join("")}
+                </div>
+              </div>
+            `).join("")}
+          </div>
+        </section>
+      `;
+    }
+
+    function resourceRowHTML(resourceId) {
+      const resource = RESOURCES[resourceId];
+      if (!resource) {
+        return "";
+      }
+      return `
+        <div class="resource-row">
+          <div>
+            <h4>${esc(resource.title)}</h4>
+            <p>${esc(resource.why)}</p>
+            <div class="resource-meta">
+              <span>${esc(resource.source)}</span>
+              <span>${esc(resource.time)}</span>
+            </div>
+          </div>
+          <a class="mini-btn" href="${esc(resource.url)}" target="_blank" rel="noopener noreferrer">打开资源 ↗</a>
+        </div>
+      `;
+    }
+
+    function taskRowHTML(week, day, index) {
+      const id = `${week.id}-d${index}`;
+      const done = isDone(id);
+      return `
+        <div class="task-row ${done ? "done" : ""}" id="${id}">
+          <input id="chk-${id}" type="checkbox" data-task-id="${id}" ${done ? "checked" : ""} aria-label="${esc(day.day)} ${esc(day.title)}">
+          <label class="task-body" for="chk-${id}">
+            <div class="task-meta"><span>${esc(day.day)}</span><span>${day.minutes} 分钟</span></div>
+            <h4>${esc(day.title)}</h4>
+            <p>${esc(day.task)}</p>
+            <div class="task-output"><strong>产出：</strong>${esc(day.output)}</div>
+          </label>
+          <button class="mini-btn focus-btn no-print" type="button" data-focus-id="${id}">专注</button>
+        </div>
+      `;
+    }
+
+    function acceptanceHTML(week) {
+      return week.acceptance.map((text, index) => {
+        const id = `${week.id}-a${index}`;
+        const done = isDone(id);
+        return `
+          <label class="check-row ${done ? "done" : ""}" id="${id}">
+            <input type="checkbox" data-task-id="${id}" ${done ? "checked" : ""} aria-label="验收：${esc(text)}">
+            <span>${esc(text)}</span>
+            <small>${done ? "已完成" : "验收"}</small>
+          </label>
+        `;
+      }).join("");
+    }
+
+    function weekNotesHTML(week) {
+      return `
+        <div class="note-field">
+          <label for="note-deliverable-${week.id}">本周交付了什么？</label>
+          <textarea id="note-deliverable-${week.id}" data-note-key="${week.id}:deliverable" placeholder="例如：3 个脚本、1 个 notebook、1 张图……">${esc(getNote(`${week.id}:deliverable`))}</textarea>
+        </div>
+        <div class="note-field">
+          <label for="note-problem-${week.id}">最大的问题是什么？</label>
+          <textarea id="note-problem-${week.id}" data-note-key="${week.id}:problem" placeholder="写下报错、卡点或还没想明白的概念。">${esc(getNote(`${week.id}:problem`))}</textarea>
+        </div>
+        <div class="note-field">
+          <label for="note-next-${week.id}">下周最重要的一件事</label>
+          <textarea id="note-next-${week.id}" data-note-key="${week.id}:next" placeholder="只写一件，具体到可以开始做。">${esc(getNote(`${week.id}:next`))}</textarea>
+        </div>
+      `;
+    }
+
+    function renderWeek(weekId) {
+      const week = weekById(weekId);
+      if (!week) {
+        navigate("dashboard");
+        return;
+      }
+
+      const stats = weekStats(week);
+      const weekQuiz = QUIZ.filter((question) => question.week === week.week);
+      viewRoot.innerHTML = `
+        <section class="week-hero">
+          <div class="week-hero-top">
+            <button class="ghost-btn" type="button" data-view="roadmap" style="color:#f8f4e8;border-color:rgba(255,255,255,.16);background:rgba(255,255,255,.06);">← 返回路线</button>
+            <span class="badge">第 ${String(week.week).padStart(2, "0")} 周</span>
+            <span class="badge">${esc(week.phase)}</span>
+          </div>
+          <h1>${esc(week.title)}</h1>
+          <p>${esc(week.goal)}</p>
+          <div class="week-meta">
+            <span>约 ${week.hours} 小时</span>
+            <span>7 个每日动作</span>
+            <span>${week.acceptance.length} 条验收</span>
+            <span>${esc(week.short)}</span>
+          </div>
+        </section>
+
+        <div class="week-layout">
+          <div class="week-main">
+            <section class="week-section">
+              <div class="week-section-head">
+                <div>
+                  <div class="eyebrow">WHAT TO LEARN</div>
+                  <h2>这一周学什么</h2>
+                </div>
+              </div>
+              <ul class="objective-list">
+                ${week.objectives.map((objective) => `<li>${esc(objective)}</li>`).join("")}
+              </ul>
+            </section>
+
+            <section class="week-section">
+              <div class="week-section-head">
+                <div>
+                  <div class="eyebrow">WHERE TO LEARN</div>
+                  <h2>去哪里学</h2>
+                </div>
+                <span class="badge gray">只看本周需要的部分</span>
+              </div>
+              <div class="resource-list">
+                ${week.resources.map(resourceRowHTML).join("")}
+              </div>
+            </section>
+
+            <section class="week-section">
+              <div class="week-section-head">
+                <div>
+                  <div class="eyebrow">WHAT TO DO</div>
+                  <h2>每天做什么</h2>
+                </div>
+                <span class="badge"><span data-week-count="${week.id}">${stats.done} / ${stats.total}</span> 完成</span>
+              </div>
+              <div class="callout" style="margin-bottom:12px;">
+                <b>45 分钟节奏</b>
+                <span>前 25 分钟看概念或示例；中间 15 分钟关掉教程自己重写；最后 5 分钟记录问题和产出。</span>
+              </div>
+              <div class="task-list">
+                ${week.days.map((day, index) => taskRowHTML(week, day, index)).join("")}
+              </div>
+            </section>
+
+            <section class="week-section" id="${week.id}-acceptance">
+              <div class="week-section-head">
+                <div>
+                  <div class="eyebrow">DELIVERABLE</div>
+                  <h2>本周交付与验收</h2>
+                </div>
+              </div>
+              <div class="deliverable-box">
+                <h3>${esc(week.deliverable.title)}</h3>
+                <p>${esc(week.deliverable.outcome)}</p>
+                <ol class="steps">
+                  ${week.deliverable.steps.map((step) => `<li>${esc(step)}</li>`).join("")}
+                </ol>
+                <div class="check-list acceptance-list">${acceptanceHTML(week)}</div>
+              </div>
+            </section>
+
+            <section class="week-section">
+              <div class="week-section-head">
+                <div>
+                  <div class="eyebrow">QUICK CHECK</div>
+                  <h2>本周自测</h2>
+                </div>
+                <span class="badge gray">${weekQuiz.length} 题</span>
+              </div>
+              <div class="mini-quiz">
+                ${weekQuiz.map((question, index) => `
+                  <details class="mini-quiz-item">
+                    <summary>${index + 1}. ${esc(question.q)}</summary>
+                    <div class="mini-quiz-answer">
+                      <p><strong>参考答案：</strong>${esc(question.options[question.answer])}</p>
+                      <p style="margin-bottom:0;">${esc(question.explain)}</p>
+                    </div>
+                  </details>
+                `).join("")}
+              </div>
+            </section>
+          </div>
+
+          <aside class="week-side">
+            <div class="side-card">
+              <div class="side-progress">
+                <div class="progress-ring" id="weekRing" style="--p:${stats.pct}%" aria-hidden="true"><span data-week-percent="${week.id}">${stats.pct}%</span></div>
+                <div>
+                  <strong data-week-count="${week.id}">${stats.done} / ${stats.total}</strong>
+                  <small>本周行动项完成</small>
+                </div>
+              </div>
+              <div class="progress-track" style="margin-top:14px;"><i data-week-bar="${week.id}" style="width:${stats.pct}%"></i></div>
+              <button class="secondary-btn no-print" type="button" data-action="print" style="width:100%;margin-top:14px;">打印本周清单</button>
+            </div>
+
+            <div class="side-card">
+              <h3>本周节奏</h3>
+              <div class="rhythm-list">
+                ${week.days.map((day, index) => {
+                  const id = `${week.id}-d${index}`;
+                  return `
+                    <div class="rhythm-item ${isDone(id) ? "done" : ""}" data-rhythm-id="${id}">
+                      <span class="rhythm-dot"></span>
+                      <span>${esc(day.day)} · ${esc(day.title)}</span>
+                      <span>${day.minutes}′</span>
+                    </div>
+                  `;
+                }).join("")}
+              </div>
+            </div>
+
+            ${week.pipeline ? `
+              <div class="side-card">
+                <h3>项目流水线</h3>
+                <div class="pipeline">
+                  ${week.pipeline.map((step, index) => `${index ? "<i>→</i>" : ""}<span>${esc(step)}</span>`).join("")}
+                </div>
+              </div>
+            ` : ""}
+
+            <div class="side-card">
+              <h3>本周复盘</h3>
+              <p style="font-size:.72rem;margin-bottom:12px;">输入后自动保存到本机浏览器。</p>
+              ${weekNotesHTML(week)}
+            </div>
+          </aside>
+        </div>
+      `;
+    }
+
+    function resourceCategoryClass(category) {
+      if (category === "数据" || category === "大模型") {
+        return "orange";
+      }
+      if (category === "机器学习") {
+        return "gold";
+      }
+      if (category === "工具" || category === "进阶") {
+        return "gray";
+      }
+      return "";
+    }
+
+    function resourceCardHTML(resource) {
+      return `
+        <article class="resource-card">
+          <span class="badge ${resourceCategoryClass(resource.category)}">${esc(resource.category)}</span>
+          <h3>${esc(resource.title)}</h3>
+          <p>${esc(resource.why)}</p>
+          <div class="resource-card-foot">
+            <span>${esc(resource.source)} · ${esc(resource.time)}</span>
+            <a class="mini-btn" href="${esc(resource.url)}" target="_blank" rel="noopener noreferrer">打开 ↗</a>
+          </div>
+        </article>
+      `;
+    }
+
+    function updateResourceList() {
+      const list = document.getElementById("resourceList");
+      if (!list) {
+        return;
+      }
+      const query = resourceQuery.trim().toLowerCase();
+      const items = Object.values(RESOURCES).filter((resource) => {
+        const categoryMatch = resourceFilter === "全部" || resource.category === resourceFilter;
+        const haystack = `${resource.title} ${resource.source} ${resource.why} ${resource.category}`.toLowerCase();
+        return categoryMatch && (!query || haystack.includes(query));
+      });
+      list.innerHTML = items.length
+        ? items.map(resourceCardHTML).join("")
+        : `<div class="empty-state">没有找到匹配资源。试试更短的关键词，或切换到“全部”。</div>`;
+      document.querySelectorAll("[data-resource-filter]").forEach((button) => {
+        button.classList.toggle("active", button.dataset.resourceFilter === resourceFilter);
+      });
+    }
+
+    function renderResources() {
+      const categories = ["全部", "Python", "数据", "机器学习", "大模型", "项目", "工具", "进阶"];
+      viewRoot.innerHTML = `
+        <section class="page-head">
+          <div class="eyebrow">LEARNING LIBRARY</div>
+          <h1>资源不是越多越好，<br>而是刚好支撑本周交付。</h1>
+          <p>先看“为什么看”和“看多少”，再打开链接。不要把收藏资源当成学习；每个资源都应该对应一个可运行、可展示的产出。</p>
+        </section>
+
+        <section class="panel soft" style="margin-bottom:18px;">
+          <div class="callout">
+            <b>使用原则</b>
+            <span>只学当天任务需要的那一节；看 10 分钟后必须回到自己的代码或项目；遇到不懂的术语，先用自己的话解释，再搜索。</span>
+          </div>
+        </section>
+
+        <div class="resource-toolbar">
+          <input class="search-input" id="resourceSearch" type="search" placeholder="搜索资源、来源或关键词，例如 pandas、RAG、README" value="${esc(resourceQuery)}" aria-label="搜索学习资源">
+          <div class="filter-chips">
+            ${categories.map((category) => `<button class="chip ${resourceFilter === category ? "active" : ""}" type="button" data-resource-filter="${category}">${category}</button>`).join("")}
+          </div>
+        </div>
+        <div class="resource-grid" id="resourceList"></div>
+      `;
+      updateResourceList();
+    }
+
+    function startQuiz() {
+      currentQuiz = {
+        questions: shuffle([...QUIZ]).slice(0, 8),
+        index: 0,
+        selected: null,
+        score: 0,
+        results: [],
+        finished: false
+      };
+      renderQuiz();
+    }
+
+    function answerQuiz(index) {
+      if (!currentQuiz || currentQuiz.selected !== null || currentQuiz.finished) {
+        return;
+      }
+      currentQuiz.selected = index;
+      const correct = index === currentQuiz.questions[currentQuiz.index].answer;
+      if (correct) {
+        currentQuiz.score += 1;
+      }
+      currentQuiz.results.push({
+        questionIndex: currentQuiz.index,
+        selected: index,
+        correct
+      });
+      renderQuiz();
+    }
+
+    function nextQuizQuestion() {
+      if (!currentQuiz || currentQuiz.selected === null || currentQuiz.finished) {
+        return;
+      }
+      if (currentQuiz.index === currentQuiz.questions.length - 1) {
+        currentQuiz.finished = true;
+        state.quizBest = state.quizBest === null
+          ? currentQuiz.score
+          : Math.max(state.quizBest, currentQuiz.score);
+        saveState();
+      } else {
+        currentQuiz.index += 1;
+        currentQuiz.selected = null;
+      }
+      renderQuiz();
+    }
+
+    function renderQuiz() {
+      if (!currentQuiz) {
+        viewRoot.innerHTML = `
+          <section class="page-head">
+            <div class="eyebrow">KNOWLEDGE CHECK</div>
+            <h1>用 8 道题，检查你是否真的理解。</h1>
+            <p>题库覆盖 8 周内容。每次随机抽 8 题，答完立刻看到解释。这里不是考试，而是帮你发现“以为懂了、其实还模糊”的地方。</p>
+          </section>
+          <div class="quiz-shell">
+            <div class="panel" style="text-align:center;padding:38px 24px;">
+              <span class="badge">16 题 · 随机抽 8 题</span>
+              <h2 style="margin-top:14px;">准备好了吗？</h2>
+              <p>最佳成绩：<strong style="color:var(--accent);">${state.quizBest === null ? "还没有记录" : `${state.quizBest} / 8`}</strong></p>
+              <button class="primary-btn" type="button" data-quiz-start>开始自测</button>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      if (currentQuiz.finished) {
+        const total = currentQuiz.questions.length;
+        const pct = Math.round((currentQuiz.score / total) * 100);
+        const verdict = pct >= 80
+          ? "理解很扎实。接下来把知识放回项目里，继续做真实问题。"
+          : pct >= 50
+            ? "基础已经建立。回看错题对应的周，再做一次小练习。"
+            : "别急着往下刷。先回到错题所在周，把概念用自己的话讲一遍。";
+        viewRoot.innerHTML = `
+          <section class="page-head">
+            <div class="eyebrow">QUIZ RESULT</div>
+            <h1>自测结果</h1>
+          </section>
+          <div class="quiz-shell">
+            <div class="score-panel">
+              <div class="eyebrow" style="color:#b9e07b;justify-content:center;">YOUR SCORE</div>
+              <div class="score-number">${currentQuiz.score} / ${total}</div>
+              <p>${verdict}</p>
+              <div class="quiz-review">
+                ${currentQuiz.questions.map((question, index) => {
+                  const result = currentQuiz.results[index];
+                  const selectedText = result ? question.options[result.selected] : "未作答";
+                  const correctText = question.options[question.answer];
+                  return `
+                    <div class="review-row ${result && result.correct ? "good" : "bad"}">
+                      <strong>${index + 1}. ${esc(question.q)}</strong>
+                      <span>你的选择：${esc(selectedText)} · 正确答案：${esc(correctText)}</span>
+                    </div>
+                  `;
+                }).join("")}
+              </div>
+              <div class="quiz-actions" style="justify-content:center;">
+                <button class="primary-btn" type="button" data-quiz-start>再抽 8 题</button>
+                <button class="secondary-btn" type="button" data-view="roadmap">回到路线</button>
+              </div>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      const question = currentQuiz.questions[currentQuiz.index];
+      const selected = currentQuiz.selected;
+      const isCorrect = selected === question.answer;
+      const progress = Math.round(((currentQuiz.index + 1) / currentQuiz.questions.length) * 100);
+      viewRoot.innerHTML = `
+        <section class="page-head">
+          <div class="eyebrow">KNOWLEDGE CHECK</div>
+          <h1>每周一个概念，<br>现在把它们连起来。</h1>
+        </section>
+        <div class="quiz-shell">
+          <div class="quiz-topline">
+            <span>第 ${currentQuiz.index + 1} / ${currentQuiz.questions.length} 题</span>
+            <span>已答对 ${currentQuiz.score} 题</span>
+          </div>
+          <div class="quiz-progress"><i style="width:${progress}%"></i></div>
+          <div class="quiz-card">
+            <span class="badge">第 ${question.week} 周 · ${esc(question.category)}</span>
+            <h2>${esc(question.q)}</h2>
+            <div class="quiz-options">
+              ${question.options.map((option, index) => {
+                let className = "";
+                if (selected !== null) {
+                  if (index === question.answer) {
+                    className = "correct";
+                  } else if (index === selected) {
+                    className = "wrong";
+                  }
+                }
+                return `<button class="quiz-option ${className}" type="button" data-quiz-option="${index}" ${selected !== null ? "disabled" : ""}>${esc(option)}</button>`;
+              }).join("")}
+            </div>
+            ${selected !== null ? `
+              <div class="quiz-feedback ${isCorrect ? "" : "bad"}">
+                <strong>${isCorrect ? "答对了" : "这次没有答对"}</strong>
+                ${esc(question.explain)}
+              </div>
+              <div class="quiz-actions">
+                <button class="primary-btn" type="button" data-quiz-next>${currentQuiz.index === currentQuiz.questions.length - 1 ? "查看结果" : "下一题"}</button>
+              </div>
+            ` : ""}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderNotes() {
+      let week = weekById(currentNotesWeekId) || COURSE[0];
+      currentNotesWeekId = week.id;
+      viewRoot.innerHTML = `
+        <section class="page-head">
+          <div class="eyebrow">REFLECTION LOG</div>
+          <h1>学习不是“看过了”，<br>是能说清楚发生了什么。</h1>
+          <p>每周花 15 分钟写三件事：交付了什么、卡在哪里、下周最重要的一件事。记录会保存在当前浏览器，不会上传。</p>
+        </section>
+
+        <div class="week-picker">
+          ${COURSE.map((item) => `
+            <button class="chip ${item.id === week.id ? "active" : ""}" type="button" data-note-week="${item.id}">
+              W${String(item.week).padStart(2, "0")}
+            </button>
+          `).join("")}
+        </div>
+
+        <div class="notes-layout">
+          <div class="notes-panel">
+            <div class="eyebrow">WEEK ${String(week.week).padStart(2, "0")} · ${esc(week.title)}</div>
+            <h2 style="font-size:1.5rem;">本周复盘</h2>
+            <p style="font-size:.8rem;">不用写长。每格写 1–3 句，能指导下周行动就够了。</p>
+            ${weekNotesHTML(week)}
+          </div>
+          <div class="notes-panel">
+            <div class="eyebrow">OPEN LOG</div>
+            <h2 style="font-size:1.5rem;">自由笔记</h2>
+            <p style="font-size:.8rem;">适合记录术语、报错、灵感或想问的问题。下次打开页面时还会在这里。</p>
+            <div class="note-field">
+              <label for="free-note-${week.id}">想到什么就写什么</label>
+              <textarea class="large" id="free-note-${week.id}" data-note-key="${week.id}:free" placeholder="今天最大的收获 / 还没懂的概念 / 想问的问题……">${esc(getNote(`${week.id}:free`))}</textarea>
+            </div>
+            <div class="data-actions">
+              <button class="secondary-btn" type="button" data-action="export">导出学习记录</button>
+              <button class="ghost-btn" type="button" data-action="trigger-import">导入记录</button>
+              <input id="importFile" type="file" accept="application/json,.json" hidden>
+            </div>
+            <div class="danger-zone">
+              <p>重置会清空所有勾选、复盘和自测最佳成绩。确定要重新开始时再操作。</p>
+              <button class="danger-btn" type="button" data-action="reset">清空所有记录</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderWeekNav() {
+      weekNav.innerHTML = COURSE.map((week) => `
+        <button class="week-nav-item" type="button" data-week="${week.id}">
+          <span class="week-dot">${String(week.week).padStart(2, "0")}</span>
+          <span class="week-nav-text">
+            <strong>${esc(week.title)}</strong>
+            <small data-week-count="${week.id}">0 / 0</small>
+          </span>
+          <span class="week-nav-bar"><i data-week-bar="${week.id}"></i></span>
+        </button>
+      `).join("");
+    }
+
+    function updateNavActive() {
+      document.querySelectorAll(".nav-item").forEach((button) => {
+        button.classList.toggle("active", currentView === button.dataset.view);
+      });
+      document.querySelectorAll(".week-nav-item").forEach((button) => {
+        button.classList.toggle("active", currentView === "week" && button.dataset.week === currentWeekId);
+      });
+
+      let title = VIEW_TITLES[currentView] || "学习总览";
+      if (currentView === "week") {
+        const week = weekById(currentWeekId);
+        title = week ? `8 周路线 / 第 ${week.week} 周 · ${week.title}` : "8 周路线";
+      }
+      breadcrumb.innerHTML = `<strong>${esc(title)}</strong>`;
+    }
+
+    function refreshProgress() {
+      const stats = courseStats();
+      const prep = prepStats();
+
+      document.querySelectorAll("[data-course-percent]").forEach((element) => {
+        element.textContent = `${stats.pct}%`;
+      });
+      document.querySelectorAll("[data-course-done]").forEach((element) => {
+        element.textContent = String(stats.done);
+      });
+      document.querySelectorAll("[data-course-total]").forEach((element) => {
+        element.textContent = String(stats.total);
+      });
+      document.querySelectorAll("[data-remaining-hours]").forEach((element) => {
+        element.textContent = stats.remainingMinutes
+          ? (stats.remainingMinutes / 60).toFixed(1)
+          : "0";
+      });
+      document.querySelectorAll("[data-quiz-best]").forEach((element) => {
+        element.textContent = state.quizBest === null ? "--" : `${state.quizBest} / 8`;
+      });
+
+      sideRing.style.setProperty("--p", `${stats.pct}%`);
+      sidePercent.textContent = `${stats.pct}%`;
+      sideCount.textContent = `${stats.done} / ${stats.total} 个行动项`;
+
+      COURSE.forEach((week) => {
+        const current = weekStats(week);
+        document.querySelectorAll(`[data-week-count="${week.id}"]`).forEach((element) => {
+          element.textContent = `${current.done} / ${current.total}`;
+        });
+        document.querySelectorAll(`[data-week-bar="${week.id}"]`).forEach((element) => {
+          element.style.width = `${current.pct}%`;
+        });
+        document.querySelectorAll(`[data-week-percent="${week.id}"]`).forEach((element) => {
+          element.textContent = `${current.pct}%`;
+        });
+      });
+
+      const weekRing = document.getElementById("weekRing");
+      if (weekRing && currentWeekId) {
+        weekRing.style.setProperty("--p", `${weekStats(weekById(currentWeekId)).pct}%`);
+      }
+
+      const prepBar = document.getElementById("prepBar");
+      const prepCount = document.getElementById("prepCount");
+      if (prepBar) {
+        prepBar.style.width = `${prep.pct}%`;
+      }
+      if (prepCount) {
+        prepCount.textContent = `${prep.done} / ${prep.total} 必做已完成`;
+      }
+
+      const nextBody = document.getElementById("nextActionBody");
+      if (nextBody) {
+        nextBody.innerHTML = nextActionHTML();
+      }
+    }
+
+    function renderCurrentView() {
+      if (currentView === "dashboard") {
+        renderDashboard();
+      } else if (currentView === "roadmap") {
+        renderRoadmap();
+      } else if (currentView === "week") {
+        renderWeek(currentWeekId);
+      } else if (currentView === "resources") {
+        renderResources();
+      } else if (currentView === "quiz") {
+        renderQuiz();
+      } else if (currentView === "notes") {
+        renderNotes();
+      }
+      refreshProgress();
+    }
+
+    function closeMobileNav() {
+      document.body.classList.remove("nav-open");
+      menuBtn.setAttribute("aria-expanded", "false");
+    }
+
+    function navigate(view, options = {}) {
+      currentView = view;
+      if (view !== "week") {
+        currentWeekId = null;
+      }
+      closeMobileNav();
+      updateNavActive();
+      renderCurrentView();
+      if (options.scroll !== false) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    }
+
+    function openWeek(weekId, focusId = null) {
+      if (!weekById(weekId)) {
+        return;
+      }
+      currentWeekId = weekId;
+      currentView = "week";
+      closeMobileNav();
+      updateNavActive();
+      renderCurrentView();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      if (focusId) {
+        window.setTimeout(() => {
+          const target = document.getElementById(focusId);
+          if (target) {
+            target.scrollIntoView({ behavior: "smooth", block: "center" });
+          }
+        }, 120);
+      }
+    }
+
+    function resolveTask(id) {
+      if (id.startsWith("prep-")) {
+        const prep = PREP.find((item) => item.id === id);
+        if (!prep) {
+          return null;
+        }
+        return {
+          type: "prep",
+          id: prep.id,
+          title: prep.title,
+          detail: prep.detail,
+          output: "完成开跑准备。",
+          minutes: prep.minutes
+        };
+      }
+
+      const parts = id.split("-");
+      const week = weekById(parts[0]);
+      const kind = parts[1] ? parts[1][0] : "";
+      const index = Number(parts[1] ? parts[1].slice(1) : NaN);
+      if (!week || Number.isNaN(index)) {
+        return null;
+      }
+      if (kind === "d" && week.days[index]) {
+        const day = week.days[index];
+        return {
+          type: "day",
+          id,
+          week,
+          title: `${day.day} · ${day.title}`,
+          detail: day.task,
+          output: day.output,
+          minutes: day.minutes
+        };
+      }
+      if (kind === "a" && week.acceptance[index]) {
+        return {
+          type: "acceptance",
+          id,
+          week,
+          title: `第 ${week.week} 周验收`,
+          detail: week.acceptance[index],
+          output: "完成一个验收项。",
+          minutes: 20
+        };
+      }
+      return null;
+    }
+
+    function toggleTask(id, checked, options = {}) {
+      if (checked) {
+        state.completed[id] = true;
+      } else {
+        delete state.completed[id];
+      }
+      saveState();
+
+      const row = document.getElementById(id);
+      if (row) {
+        row.classList.toggle("done", checked);
+        const checkbox = row.querySelector(`input[data-task-id="${id}"]`);
+        if (checkbox) {
+          checkbox.checked = checked;
+        }
+      }
+      const rhythm = document.querySelector(`[data-rhythm-id="${id}"]`);
+      if (rhythm) {
+        rhythm.classList.toggle("done", checked);
+      }
+
+      refreshProgress();
+      if (!options.silent) {
+        const task = resolveTask(id);
+        showToast(checked ? `已打卡 · ${task ? task.title : "这一项"}` : "已取消打卡");
+      }
+      const allStats = courseStats();
+      if (checked && allStats.done === allStats.total) {
+        showToast("主线完成。现在去整理复盘，并选择下一阶段方向。");
+      }
+    }
+
+    function formatClock(totalSeconds) {
+      const minutes = Math.floor(totalSeconds / 60);
+      const seconds = totalSeconds % 60;
+      return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+    }
+
+    function updateFocusClock() {
+      focusClock.textContent = formatClock(Math.max(0, focusSeconds));
+    }
+
+    function clearFocusTimer() {
+      if (focusTimer) {
+        window.clearInterval(focusTimer);
+        focusTimer = null;
+      }
+      focusRunning = false;
+    }
+
+    function tickFocus() {
+      if (!focusRunning) {
+        return;
+      }
+      focusSeconds = Math.max(0, Math.ceil((focusEndAt - Date.now()) / 1000));
+      updateFocusClock();
+      if (focusSeconds <= 0) {
+        clearFocusTimer();
+        focusStart.textContent = "时间到";
+        focusComplete.focus();
+        showToast("25 分钟到了。先记下进展，再决定是否继续。");
+      }
+    }
+
+    function startFocus(task) {
+      if (!task) {
+        showToast("还没有可执行的下一步。");
+        return;
+      }
+      focusTask = task;
+      clearFocusTimer();
+      focusSeconds = 25 * 60;
+      updateFocusClock();
+      focusTitle.textContent = task.title;
+      focusMeta.textContent = `${task.minutes} 分钟 · ${task.detail}`;
+      focusStart.textContent = "开始计时";
+      focusComplete.textContent = isDone(task.id) ? "已完成，关闭" : "完成并打卡";
+      focusModal.hidden = false;
+      document.body.style.overflow = "hidden";
+      focusStart.focus();
+    }
+
+    function closeFocus() {
+      clearFocusTimer();
+      focusModal.hidden = true;
+      document.body.style.overflow = "";
+      focusTask = null;
+    }
+
+    function startFocusById(id) {
+      startFocus(resolveTask(id));
+    }
+
+    function exportState() {
+      const payload = {
+        version: 1,
+        exportedAt: new Date().toISOString(),
+        state
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const anchor = document.createElement("a");
+      const date = new Date().toISOString().slice(0, 10);
+      anchor.href = url;
+      anchor.download = `ai-learning-progress-${date}.json`;
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
+      URL.revokeObjectURL(url);
+      showToast("学习记录已导出。");
+    }
+
+    function importState(file) {
+      if (!file) {
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const parsed = JSON.parse(String(reader.result));
+          const raw = parsed && parsed.state ? parsed.state : parsed;
+          if (!raw || (!raw.completed && !raw.notes)) {
+            throw new Error("缺少学习记录");
+          }
+          if (!window.confirm("导入会覆盖当前浏览器里的进度和笔记，确定继续吗？")) {
+            return;
+          }
+          state = normalizeState(raw);
+          saveState();
+          renderCurrentView();
+          updateNavActive();
+          showToast("学习记录已导入。");
+        } catch (error) {
+          showToast("导入失败：文件不是有效的学习记录。");
+        }
+      };
+      reader.readAsText(file, "utf-8");
+    }
+
+    function resetAll() {
+      if (!window.confirm("确定清空所有勾选、复盘和自测成绩吗？此操作不可撤销。")) {
+        return;
+      }
+      state = defaultState();
+      try {
+        localStorage.removeItem(STORAGE_KEY);
+      } catch (error) {
+        // 忽略浏览器禁用 localStorage 的情况。
+      }
+      currentQuiz = null;
+      renderCurrentView();
+      updateNavActive();
+      showToast("所有学习记录已清空。");
+    }
+
+    function handleAction(action) {
+      if (action === "export") {
+        exportState();
+        return;
+      }
+      if (action === "go-next") {
+        const next = getNextAction();
+        if (!next) {
+          return;
+        }
+        if (next.type === "prep") {
+          document.getElementById("prepCard")?.scrollIntoView({ behavior: "smooth", block: "center" });
+        } else {
+          openWeek(next.week.id, next.id);
+        }
+        return;
+      }
+      if (action === "go-prep") {
+        document.getElementById("prepCard")?.scrollIntoView({ behavior: "smooth", block: "center" });
+        return;
+      }
+      if (action === "focus-next") {
+        startFocus(getNextAction());
+        return;
+      }
+      if (action === "print") {
+        window.print();
+        return;
+      }
+      if (action === "trigger-import") {
+        document.getElementById("importFile")?.click();
+        return;
+      }
+      if (action === "reset") {
+        resetAll();
+      }
+    }
+
+    document.addEventListener("click", (event) => {
+      const viewButton = event.target.closest("[data-view]");
+      if (viewButton) {
+        navigate(viewButton.dataset.view);
+        return;
+      }
+
+      const noteWeekButton = event.target.closest("[data-note-week]");
+      if (noteWeekButton) {
+        currentNotesWeekId = noteWeekButton.dataset.noteWeek;
+        renderNotes();
+        refreshProgress();
+        return;
+      }
+
+      const weekButton = event.target.closest("[data-week]");
+      if (weekButton) {
+        openWeek(weekButton.dataset.week);
+        return;
+      }
+
+      const actionButton = event.target.closest("[data-action]");
+      if (actionButton) {
+        handleAction(actionButton.dataset.action);
+        return;
+      }
+
+      const focusButton = event.target.closest("[data-focus-id]");
+      if (focusButton) {
+        startFocusById(focusButton.dataset.focusId);
+        return;
+      }
+
+      const quizStart = event.target.closest("[data-quiz-start]");
+      if (quizStart) {
+        startQuiz();
+        return;
+      }
+
+      const quizOption = event.target.closest("[data-quiz-option]");
+      if (quizOption) {
+        answerQuiz(Number(quizOption.dataset.quizOption));
+        return;
+      }
+
+      const quizNext = event.target.closest("[data-quiz-next]");
+      if (quizNext) {
+        nextQuizQuestion();
+        return;
+      }
+
+      const filterButton = event.target.closest("[data-resource-filter]");
+      if (filterButton) {
+        resourceFilter = filterButton.dataset.resourceFilter;
+        updateResourceList();
+      }
+    });
+
+    document.addEventListener("change", (event) => {
+      if (event.target.matches("[data-task-id]")) {
+        toggleTask(event.target.dataset.taskId, event.target.checked);
+        return;
+      }
+      if (event.target.id === "importFile") {
+        importState(event.target.files?.[0]);
+        event.target.value = "";
+      }
+    });
+
+    document.addEventListener("input", (event) => {
+      if (event.target.matches("[data-note-key]")) {
+        state.notes[event.target.dataset.noteKey] = event.target.value;
+        saveState();
+        return;
+      }
+      if (event.target.id === "resourceSearch") {
+        resourceQuery = event.target.value;
+        updateResourceList();
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !focusModal.hidden) {
+        closeFocus();
+        return;
+      }
+      if ((event.key === "Enter" || event.key === " ") && event.target.matches('[role="button"][data-week]')) {
+        event.preventDefault();
+        openWeek(event.target.dataset.week);
+      }
+    });
+
+    menuBtn.addEventListener("click", () => {
+      const open = document.body.classList.toggle("nav-open");
+      menuBtn.setAttribute("aria-expanded", String(open));
+    });
+
+    mobileBackdrop.addEventListener("click", closeMobileNav);
+
+    focusClose.addEventListener("click", closeFocus);
+    focusReset.addEventListener("click", () => {
+      clearFocusTimer();
+      focusSeconds = 25 * 60;
+      updateFocusClock();
+      focusStart.textContent = "开始计时";
+    });
+
+    focusStart.addEventListener("click", () => {
+      if (!focusTask) {
+        return;
+      }
+      if (focusRunning) {
+        clearFocusTimer();
+        focusStart.textContent = "继续计时";
+        return;
+      }
+      if (focusSeconds <= 0) {
+        focusSeconds = 25 * 60;
+      }
+      focusEndAt = Date.now() + focusSeconds * 1000;
+      focusRunning = true;
+      focusStart.textContent = "暂停";
+      focusTimer = window.setInterval(tickFocus, 250);
+      tickFocus();
+    });
+
+    focusComplete.addEventListener("click", () => {
+      if (!focusTask) {
+        closeFocus();
+        return;
+      }
+      const id = focusTask.id;
+      const wasDone = isDone(id);
+      if (!wasDone) {
+        state.completed[id] = true;
+        saveState();
+        const row = document.getElementById(id);
+        if (row) {
+          row.classList.add("done");
+          const checkbox = row.querySelector(`input[data-task-id="${id}"]`);
+          if (checkbox) {
+            checkbox.checked = true;
+          }
+        }
+        const rhythm = document.querySelector(`[data-rhythm-id="${id}"]`);
+        if (rhythm) {
+          rhythm.classList.add("done");
+        }
+        refreshProgress();
+        showToast(`已打卡 · ${focusTask.title}`);
+      }
+      closeFocus();
+    });
+
+    renderWeekNav();
+    updateNavActive();
+    renderCurrentView();
+    refreshProgress();
+  </script>
+</body>
+</html>
